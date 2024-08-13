@@ -1,10 +1,10 @@
 import mne
 import os
 
-notebooks_root = os.path.join('/home', 'cognestic', 'Desktop', 'cognestic', 'notebooks')
+demo_root = os.path.join("/home", "cognestic", "Desktop", "COGNESTIC", "08_EEG_MEG", "EEGMEG5-BIDS")
 
-bids_root = os.path.join("/home", "cognestic", "mne_data", "MNE-sample-data-bids")
-deriv_root = os.path.join(notebooks_root, "data", "mne_data", "derivatives", "mne-bids-pipeline", "MNE-sample-data-bids")
+bids_root = os.path.join("/home", "cognestic", "Desktop", "COGNESTIC", "08_EEG_MEG", "MNE-sample-data-bids")
+deriv_root = os.path.join(demo_root, "data", "derivatives", "mne-bids-pipeline", "MNE-sample-data-bids")
 subjects_dir = os.path.join(bids_root, "derivatives", "freesurfer", "subjects")
 
 subjects = ["01"]
