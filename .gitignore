@@ -4,3 +4,12 @@ __pycache__/
 
 ### Jupyter Notebook ###
 .ipynb_checkpoints
+
+### Data folders and files ###
+*data*
+Simplified
+*.fif
+*.nii*
+
+### RSA demos ###
+*_demos
