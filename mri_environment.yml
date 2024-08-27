@@ -8,6 +8,7 @@ dependencies:
   - pytest=8.3.2
   - seaborn=0.13.2
   - pip:
+    - antspyx==0.5.3
     - atlasreader==0.3.2
     - dcm2niix==1.0.20220715
     - dipy==1.9.0
