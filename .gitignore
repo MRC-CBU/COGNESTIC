@@ -7,6 +7,7 @@ __pycache__/
 
 ### Data folders and files ###
 *data*
+!*data*.ipynb
 Simplified
 *.fif
 *.nii*
