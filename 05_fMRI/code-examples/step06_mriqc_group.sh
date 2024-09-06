@@ -12,13 +12,13 @@
 # Define paths
 #-----------------------------------------------------------
 # Your project's root directory
-PROJECT_PATH='FaceProcessing'
+PROJECT_PATH='../FaceProcessing'
 
 # ======================================================================
 # MRIQC with Singularity
 # ======================================================================
 singularity run --cleanenv -B "$PROJECT_PATH":/"$PROJECT_PATH" \
-    /imaging/local/software/singularity_images/mriqc/mriqc-22.0.1.simg \
+    /cognestic/containers/mriqc-22.0.1.simg \
     "$PROJECT_PATH"/data "$PROJECT_PATH"/data/derivatives/mriqc/ \
     --work-dir "$PROJECT_PATH"/work/mriqc/ \
     group \

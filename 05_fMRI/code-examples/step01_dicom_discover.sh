@@ -15,10 +15,10 @@
 # ------------------------------------------------------------
 
 # Path to the raw DICOM files
-DICOM_PATH='mridata/CBU090928_MR09029'
+DICOM_PATH='../mridata/CBU090928_MR09029'
 
 # Location of the output data (it will be created if it doesn't exist)
-OUTPUT_PATH="FaceProcessing/scratch/dicom_discovery"
+OUTPUT_PATH="../FaceProcessing/scratch/dicom_discovery"
 
 # Subject ID
 SUBJECT_ID='04'
@@ -26,7 +26,7 @@ SUBJECT_ID='04'
 # ------------------------------------------------------------
 # Activate the mri environment (or any other environment with heudiconv installed)
 # ------------------------------------------------------------
-conda activate mri
+#conda activate mri
 
 # ------------------------------------------------------------
 # Run the heudiconv
@@ -42,6 +42,6 @@ heudiconv \
 # ------------------------------------------------------------
 
 # Deactivate the conda environment
-conda deactivate
+#conda deactivate
 
 cp "${OUTPUT_PATH}"/.heudiconv/"${SUBJECT_ID}"/info/dicominfo.tsv "${OUTPUT_PATH}"

@@ -15,20 +15,20 @@
 # ------------------------------------------------------------
 
 # Path to the raw DICOM files
-DICOM_PATH='/imaging/correia/da05/workshops/2024-09-COGNESTIC/fMRI/mridata/CBU090928_MR09029'
+DICOM_PATH='../mridata/CBU090928_MR09029'
 
 # Location of the output data (it will be created if it doesn't exist)
-OUTPUT_PATH="/imaging/correia/da05/workshops/2024-09-COGNESTIC/fMRI/FaceProcessing/data"
+OUTPUT_PATH="../FaceProcessing/data"
 
 # Subject ID
 SUBJECT_ID='04'
 
-HEURISTIC_FILE="/imaging/correia/da05/workshops/2024-09-COGNESTIC/fMRI/code-examples/bids_heuristic.py"
+HEURISTIC_FILE="bids_heuristic.py"
 
 # ------------------------------------------------------------
 # Activate the mri environment (or any other environment with heudiconv installed)
 # ------------------------------------------------------------
-conda activate mri
+#conda activate mri
 
 # ------------------------------------------------------------
 # Run the heudiconv
@@ -44,4 +44,4 @@ heudiconv \
 # ------------------------------------------------------------
 
 # Deactivate the conda environment
-conda deactivate
+#conda deactivate
