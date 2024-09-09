@@ -4,7 +4,6 @@ This repository contains hands-on materials for the [COGNESTIC-2024 workshop](ht
 
 Recommended reading and viewing materials to help better understand the hands-on tutorials are available here: [https://imaging.mrc-cbu.cam.ac.uk/methods/COGNESTIC2024](https://imaging.mrc-cbu.cam.ac.uk/methods/COGNESTIC2024)
 
-
 The hands-on workshop comprises ten modules. We use three different conda environments. The environment used for each module is listed in the table below.
 
 | **Module**             | **Conda Environment** | **Tutor**  |
