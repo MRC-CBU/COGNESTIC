@@ -12,7 +12,7 @@
 # Define paths
 #-----------------------------------------------------------
 # Your project's root directory
-PROJECT_PATH='../FaceProcessing'
+PROJECT_PATH='/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing'
 
 # ======================================================================
 # MRIQC with Singularity

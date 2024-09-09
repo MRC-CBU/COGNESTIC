@@ -3,7 +3,7 @@
 # ============================================================
 # This script is used to discover DICOM files using HeuDiConv.
 #
-# Usage: ./step01_dicom_discover.sh
+# Usage: ./step02_dicom_to_bids.sh
 # 
 # It is assumed that you have a conda environment called 'mri' available (check with 'conda env list'). 
 # If not, create a conda environment with the heudiconv and dcm2niix packages installed.
@@ -15,20 +15,20 @@
 # ------------------------------------------------------------
 
 # Path to the raw DICOM files
-DICOM_PATH='../mridata/CBU090928_MR09029'
+DICOM_PATH='/home/cognestic/COGNESTIC/05_fMRI/mridata/CBU090928_MR09029'
 
 # Location of the output data (it will be created if it doesn't exist)
-OUTPUT_PATH="../FaceProcessing/data"
+OUTPUT_PATH='/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data'
 
 # Subject ID
 SUBJECT_ID='04'
 
-HEURISTIC_FILE="bids_heuristic.py"
+HEURISTIC_FILE='/home/cognestic/COGNESTIC/05_fMRI/code-examples/bids_heuristic.py'
 
 # ------------------------------------------------------------
 # Activate the mri environment (or any other environment with heudiconv installed)
 # ------------------------------------------------------------
-#conda activate mri
+#conda activate mri # This doesn't work on all systems. Then you need to activate the environment manually.
 
 # ------------------------------------------------------------
 # Run the heudiconv
@@ -45,3 +45,14 @@ heudiconv \
 
 # Deactivate the conda environment
 #conda deactivate
+
+# HeudiConv parameters:
+# --files: Files or directories containing files to process
+# --outdir: Output directory
+# --heuristic: Name of a known heuristic or path to the Python script containing heuristic
+# --subjects: Subject ID
+# --converter : dicom to nii converter (dcm2niix or none)
+# --bids: Flag for output into BIDS structure
+# --overwrite: Flag to overwrite existing files
+# 
+# For a full list of parameters, see: https://heudiconv.readthedocs.io/en/latest/usage.html 
