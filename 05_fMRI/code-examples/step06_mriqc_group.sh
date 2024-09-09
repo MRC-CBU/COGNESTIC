@@ -20,7 +20,7 @@ PROJECT_PATH='/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing'
 singularity run --cleanenv -B "$PROJECT_PATH":/"$PROJECT_PATH" \
     /cognestic/containers/mriqc-22.0.1.simg \
     "$PROJECT_PATH"/data "$PROJECT_PATH"/data/derivatives/mriqc/ \
-    --work-dir "$PROJECT_PATH"/work/mriqc/ \
+    --work-dir "$PROJECT_PATH"/scratch/mriqc/ \
     group \
     --float32 \
     --n_procs 16 --mem_gb 24 \
