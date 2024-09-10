@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>nb01_Data-Management</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>nb01_Data-Organisation</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7521,8 +7521,11 @@ a.anchor-link {
 <li><strong>Date:</strong> August 2024</li>
 <li><strong>conda environment</strong>: I used the <a href="https://github.com/MRC-CBU/COGNESTIC/blob/main/mri_environment.yml">fMRI workshop's conda environment</a> to run this notebook and any accompanied scripts.</li>
 </ul>
-<h1 id="fMRI-Data-Management">fMRI Data Management<a class="anchor-link" href="#fMRI-Data-Management">¶</a></h1><p>Effective data management is essential in fMRI research, ensuring that datasets are well-organised, reproducible, and easily accessible for analysis and sharing. Standardised formats like BIDS not only streamlines workflows but also enhances collaboration and supports long-term data integrity.</p>
-<p>In this tutorial, we will learn how to convert fMRI data into BIDS format using <a href="https://heudiconv.readthedocs.io/en/latest/index.html">HeuDiConv</a> and how to query the BIDS dataset using <a href="https://bids-standard.github.io/pybids/">PyBIDS</a>.</p>
+<h1 id="fMRI-Data-Organisation">fMRI Data Organisation<a class="anchor-link" href="#fMRI-Data-Organisation">¶</a></h1><p>An fMRI study typically involves multiple imaging protocols and subjects, resulting in complex datasets with numerous files in various formats, ranging from simple text files to multidimensional imaging data. These files can be organized in many ways, and without a consistent approach across projects and research groups, can arise in wasted time rearranging data or rewriting scripts to match specific file formats and structures, potentially introducing errors. Adopting a common standard for data organisation provides numerous advantages: it improves understanding of the data, even for those not directly involved in the project, reduces errors, enhances compatibility with analysis software, and facilitates the development of automated tools. In essence, it helps <strong>make data FAIR</strong> (Findable, Accessible, Interoperable, and Reusable).</p>
+<p>The <a href="https://bids.neuroimaging.io/">Brain Imaging Data Structure (BIDS)</a>, developed since 2015, is a community-driven standard for organising data and metadata across various neuroscience modalities. Converting your fMRI project's data into BIDS format enables easier sharing, reuse, and application of automated pipelines and quality assurance protocols, such as <a href="https://bids-apps.neuroimaging.io/">BIDS Apps</a> or your/your group's own pipelines.</p>
+<p>Converting raw data into the BIDS format may initially appear challenging. While there are various conversion tools available (see a list <a href="https://bids.neuroimaging.io/benefits#converters">here</a>), the range of options can make it hard to decide which tool to use. We have chosen <a href="https://joss.theoj.org/papers/10.21105/joss.05839">HeuDiConv</a> which in fact predates the BIDS format and is a flexible, general-purpose converter for organising brain imaging data into structured directory layouts.</p>
+<p>In this tutorial, we will walk you through the process of converting fMRI data into BIDS format using HeuDiConv and show you how to interact with the resulting BIDS dataset using <a href="https://bids-standard.github.io/pybids/">PyBIDS</a>.</p>
+<p>(<em>For a more detailed tutorial on BODS conversion see: <a href="https://github.com/MRC-CBU/BIDS_conversion/tree/main/MRI">https://github.com/MRC-CBU/BIDS_conversion/tree/main/MRI</a>.</em>)</p>
 <p>Here are two recommended short videos to help you better understand the basics of fMRI terminology and data structure.</p>
 </div>
 </div>
@@ -7587,22 +7590,21 @@ a.anchor-link {
 <ol>
 <li>Create a project folder</li>
 <li>Retrieving the DICOM files</li>
-<li>Brain Imaging Data Structure (BIDS)</li>
-<li>HeuDiConv<br/>
-4.1. Step 1: Discovering your scans<br/>
-4.2. Step 2: Creating a heuristic file<br/>
-4.3. Step 3: Converting the data<br/>
-4.4. 'To Do' - additional information to check and add</li>
-<li>Validate BIDS structure</li>
-<li>PyBIDS
-6.1. Querying the BIDSLayout<br/>
-6.2. Filtering files by entities<br/>
-6.3. Filtering by metadata<br/>
-6.4. Other <code>return_type</code> values<br/>
-6.5. The <code>BIDSFile</code><br/>
-6.6. <code>.tsv</code> files<br/>
-6.7. Filename parsing<br/>
-6.8. Report generation</li>
+<li>Converting to BIDS using HeuDiConv<br/>
+3.1. Step 1: Discovering your scans<br/>
+3.2. Step 2: Creating a heuristic file<br/>
+3.3. Step 3: Converting the data<br/>
+3.4. 'To Do' - additional information to check and add<br/>
+3.5. Validate BIDS structure</li>
+<li>PyBIDS<br/>
+4.1. Querying the BIDSLayout<br/>
+4.2. Filtering files by entities<br/>
+4.3. Filtering by metadata<br/>
+4.4. Other <code>return_type</code> values<br/>
+4.5. The <code>BIDSFile</code><br/>
+4.6. <code>.tsv</code> files<br/>
+4.7. Filename parsing<br/>
+4.8. Report generation</li>
 </ol>
 </div>
 </div>
@@ -7645,7 +7647,7 @@ a.anchor-link {
 <div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>My_fMRI_study/<span class="o">{</span>code/<span class="o">{</span>task,preprocessing,analysis<span class="o">}</span>,data,documents,results,scratch,logs<span class="o">}</span>
 </pre></div>
 <p>For this workshop, we have already created it for you as the <code>FaceProcessing</code> directory.</p>
-<p>Let's take a look at the directory's contents.</p>
+<p>Let's take a look at the directory's current content.</p>
 </div>
 </div>
 </div>
@@ -7654,7 +7656,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>tree<span class="w"> </span>FaceProcessing<span class="w"> </span>-L<span class="w"> </span><span class="m">2</span>
@@ -7680,10 +7682,11 @@ a.anchor-link {
 ├── <span class="ansi-blue-intense-fg ansi-bold">documents</span>
 ├── <span class="ansi-blue-intense-fg ansi-bold">logs</span>
 ├── <span class="ansi-blue-intense-fg ansi-bold">results</span>
-│   └── <span class="ansi-blue-intense-fg ansi-bold">first-level</span>
+│   ├── <span class="ansi-blue-intense-fg ansi-bold">first-level</span>
+│   └── <span class="ansi-blue-intense-fg ansi-bold">group-level</span>
 └── <span class="ansi-blue-intense-fg ansi-bold">scratch</span>
 
-11 directories, 0 files
+12 directories, 0 files
 </pre>
 </div>
 </div>
@@ -7696,7 +7699,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Retrieving-the-DICOM-files">Retrieving the DICOM files<a class="anchor-link" href="#Retrieving-the-DICOM-files">¶</a></h2><p><code>DICOM</code> files are the raw imaging files generated by the MRI scanner. Typically, they are stored on an MRI data server. At the CBU, each imaging project is assigned a unique code. By knowing the project's code, we can locate the raw DICOM files on our server.</p>
+<h2 id="Retrieving-the-DICOM-files">Retrieving the DICOM files<a class="anchor-link" href="#Retrieving-the-DICOM-files">¶</a></h2><p><code>DICOM</code> files are the raw imaging files generated by the MRI scanner. Typically, they are stored on an MRI data server. Here, at the CBU, each imaging project is assigned a unique code. By knowing the project's code, we can locate the raw DICOM files on our server.</p>
 <p>For this tutorial, we have copied one subject's DICOM data from our server to the <code>mridata</code> directory.</p>
 </div>
 </div>
@@ -7706,7 +7709,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>tree<span class="w"> </span>mridata<span class="w"> </span>-L<span class="w"> </span><span class="m">3</span>
@@ -7752,10 +7755,8 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Each <code>Series###</code> folder contains DICOM files of the particular scan. The name of the folder is the same as what a radiographer named the scan in the MRI console. Usually, the name is very indicative of what type of scan it is. In the example above, we acquired a T1w anatomical/structural scan (MPRAGE), nine functional scans (BOLD), and two field maps. The <em>Series_001_CBU_Localiser</em> scan is a positional scan for the MRI and can be ignored.</p>
-<p>Each of these folders contains DICOM (<code>.dcm</code>) files, typically, one file per slice for structural scans or one file per volume for functional scans. These files contain a header with the metadata (e.g., acquisition parameters) and the actual image itself. DICOM is a standard format for any medical image, not just the brain. To work with the brain images, we need to convert the DICOM files to NIfTI format which is a cross-platform and cross-software standard for brain images. Along with having the files in NIfTI format, we need to name and organise them according to BIDS standard.</p>
-<p>Each <code>Series###</code> folder contains the DICOM files for a particular scan. The folder name corresponds to what the radiographer named the scan in the MRI console. Typically, the name is indicative of the scan type. In the example above, we acquired a T1-weighted anatomical/structural scan (MPRAGE), nine functional scans (BOLD), and two field maps. The Series_001_CBU_Localiser scan is a positional scan for the MRI system and can be ignored.</p>
-<p>Each of these folders contains DICOM (.dcm) files, usually one file per slice for structural scans or one file per volume for functional scans. These files include a header with metadata (e.g., acquisition parameters) and the image itself. DICOM is a standard format for any medical image, not just brain scans. However, to work with brain images efficiently, we need to convert the DICOM files into NIfTI format—a cross-platform and cross-software standard for brain imaging. In addition to converting the files, we must name and organise them according to the BIDS standard.</p>
+<p>Each <code>Series###</code> folder contains DICOM files of the particular scan. The name of the folder is the same as what a radiographer named the scan in the MRI console. Usually, the name is very indicative of what type of scan it is. In the example above, we acquired a T1w anatomical/structural scan (<strong>MPRAGE</strong>), nine functional scans (<strong>BOLD</strong>), and two <strong>field maps</strong>. The <em>Series_001_CBU_Localiser</em> scan is a positional scan for the MRI and can be ignored.</p>
+<p>Each of these folders contains DICOM (<code>.dcm</code>) files, typically, one file per slice for structural scans or one file per volume for functional scans. These files contain a header with the metadata (e.g., acquisition parameters) and the actual image itself. DICOM is a standard format for any medical image, not just the brain. To work with the brain images, we <strong>need to convert the DICOM files to NIfTI format</strong> which is a cross-platform and cross-software standard for brain images. Along with having the files in NIfTI format, we need to <strong>name and organise them according to BIDS</strong> standard. For that, we will use HeuDiConv.</p>
 </div>
 </div>
 </div>
@@ -7766,35 +7767,14 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Brain-Imaging-Data-Structure-(BIDS)">Brain Imaging Data Structure (BIDS)<a class="anchor-link" href="#Brain-Imaging-Data-Structure-(BIDS)">¶</a></h2><p>(<em><strong>For a more detailed tutorial on BODS conversion see: <a href="https://github.com/MRC-CBU/BIDS_conversion/tree/main/MRI">https://github.com/MRC-CBU/BIDS_conversion/tree/main/MRI</a>.</strong></em>)</p>
-<p>To proceed with analysis, we need to convert the <code>DICOMs</code> to <code>NIfTI</code> format and then organise all these files in a 'nice' way.</p>
-<p><a href="https://bids-specification.readthedocs.io/en/stable/">Brain Imaging Data Structure (<strong>BIDS</strong>)</a> is a a standard for organizing and describing neuroimaging (and behavioural) datasets. See <a href="https://doi.org/10.1038/sdata.2016.44">BIDS paper</a> and <a href="http://bids.neuroimaging.io">http://bids.neuroimaging.io</a> website for more information.</p>
-<p>How to get your DICOMs into NIfTI and into BIDS?</p>
-<p>Several tools exist (see a full list <a href="https://bids.neuroimaging.io/benefits#converters">here</a>). We will use <a href="https://joss.theoj.org/papers/10.21105/joss.05839">HeuDiConv</a>.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="HeuDiConv">HeuDiConv<a class="anchor-link" href="#HeuDiConv">¶</a></h2><p>HeudiConv is a comand-line tool. To use it, you would either install heudiconv and dcm2niix packages locally:</p>
-<pre><code>pip install heudiconv dcm2niix
-
-</code></pre>
-<p>or use Docker (or Apptainer/Singularity) container image</p>
-<pre><code>docker pull nipy/heudiconv
-</code></pre>
-<p>Here we have <code>heudiconv</code> included in the <code>mri</code> conda environment that we are using for this workshop.</p>
+<h2 id="Converting-to-BIDS-using-HeuDiConv">Converting to BIDS using HeuDiConv<a class="anchor-link" href="#Converting-to-BIDS-using-HeuDiConv">¶</a></h2><p>HeudiConv is a Python-based comand-line tool. To use it, you would either install <em>heudiconv</em> and <em>dcm2niix</em> packages locally (<code>pip install heudiconv dcm2niix</code>) or use Docker (or Apptainer/Singularity) container image (<code>docker pull nipy/heudiconv</code>).</p>
+<p>Here we have <em>heudiconv</em> (and the required <em>dcm2niix</em>, for dicom to nifti conversion) included in the <code>mri</code> conda environment that we are using for this workshop.</p>
 <p>HeuDiConv does the following:</p>
 <ul>
 <li>converts DICOM (.dcm) files to NIfTI format (<code>.nii</code> or <code>.nii.gz</code>);</li>
 <li>generates their corresponding metadata files (<code>.json</code>);</li>
 <li>renames the files and organises them in folders following BIDS specification;</li>
-<li>generates several other <code>.json</code> and <code>.tsv</code> files required by BIDS.</li>
+<li>generates several other <code>.json</code> and <code>.tsv</code> files required for BIDS datasets.</li>
 </ul>
 <p>The final result of DICOM Series being converted into BIDS for our example subject above would be this:</p>
 <p><img alt="dicom_bids.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA1AAAANICAYAAADJng7HAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
@@ -11234,8 +11214,7 @@ pICaLhBQ9lwRwB7oUB9eGmufT7zLKZFIJBKrF1JAJRKJRE+MI6C8W8iT0XJp0/ShXrLWdSQSiURi
 IpFIJBI9kQIqkUgkEolEIpFIJHqhaf4fMTdTxtCGMn0AAAAASUVORK5CYII=
 "/></p>
 <p><em>(Why are we working with sub-04 instead of sub-01? The first three subjects in this study did not consent to having their raw data made public.)</em></p>
-<p>HeuDiConv needs information on how to translate your specific DICOMs into BIDS. This information is provided in a <a href="https://heudiconv.readthedocs.io/en/latest/heuristics.html">heuristic file</a> that the user creates.</p>
-<p>To create the heuristic file, you need to know what scans you have, which ones you want to convert (you don't have to convert all scans, only the ones you need for your project), and how to uniquely identify each scan based on its metadata.</p>
+<p>HeuDiConv needs information on how to translate your specific DICOMs into BIDS. This information is provided in a <a href="https://heudiconv.readthedocs.io/en/latest/heuristics.html">heuristic file</a> that the user creates. To create the heuristic file, you need to know what scans you have, which ones you want to convert (you don't have to convert all scans, only the ones you need for your project), and how to uniquely identify each scan based on its metadata.</p>
 <p>As such, <strong>converting DICOM data to BIDS using HeuDiConv involves 3 main steps</strong>:</p>
 <ol>
 <li>Discovering what DICOM series (scans) there are in your data</li>
@@ -11252,7 +11231,7 @@ IpFIJBI9kQIqkUgkEolEIpFIJHqhaf4fMTdTxtCGMn0AAAAASUVORK5CYII=
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Step-1:-Discovering-your-scans">Step 1: Discovering your scans<a class="anchor-link" href="#Step-1:-Discovering-your-scans">¶</a></h3><p>First, you need to know what scans are available and how to uniquely identify them using their metadata. While you could manually check the metadata of each DICOM file, this is not very convenient. Instead, you can 'ask' HeuDiConv to perform the scan discovery for you. By running HeuDiConv without specifying NIfTI conversion or a heuristic file, it will generate a DICOM info table that lists all scans and their metadata. It will look something like this:</p>
+<h3 id="Step-1:-Discovering-your-scans">Step 1: Discovering your scans<a class="anchor-link" href="#Step-1:-Discovering-your-scans">¶</a></h3><p>First, you need to know what scans there are in your MRI data and how to uniquely identify them using their metadata. While you could manually check the metadata of each DICOM file, this is not very convenient. Instead, you can 'ask' HeuDiConv to perform the scan discovery for you. By running HeuDiConv without specifying NIfTI conversion or a heuristic file, it will generate a DICOM info table that lists all scans and their metadata. It will look something like this:</p>
 <p><img alt="dicom_info.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA5AAAAEwCAYAAADBz57jAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
 jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAIApSURBVHhe7b1byiS9cob7TWXfeBA1gD2UuvDt
 HsO6r1uDWQaDweDzqbwwGAwGg8FgY3zXA1jDqJ06ZSpCoZCUlVIpK98HtP6uVGYo9MZBlf11r/75
@@ -11832,10 +11811,9 @@ mFU3+NXG1fzqYXdWDcH5GJFLeIGsAEUNzgZyFoCxoOb2Matu8KuNq/nVw+6sGoLzMSKX8AJZAYoa
 nA3kLABjQc3tY1bd4FcbV/Orh91ZNQTnY0Qu4QWyAhQ1OBvIWQDGgprbx6y6wa82ruZXD7uzagjO
 R/9cer3+f4LdLlzTXzgfAAAAAElFTkSuQmCC
 "/></p>
-<p>The column names are metadata fields and rows contain their corresponding values.</p>
-<p>To generate such a table, you would run the following command in the terminal:</p>
+<p>The column names are metadata fields and rows contain their corresponding values. To generate such a table, you would run the following command in the terminal:</p>
 <p><code>heudiconv --files mridata/CBU090928_MR09029/*/*/*.dcm --outdir FaceProcessing/scratch/dicom_discovery --heuristic convertall --subjects '04' --converter none --bids --overwrite</code></p>
-<p>However, this approach is error-prone and not easily reproducible. Instead, we recommend writing a simple bash script like this <a href="code-examples/step01_dicom_discover.sh">code-examples/step01_dicom_discover.sh</a></p>
+<p>However, command lines are error-prone and not easily reproducible. Instead, we recommend writing a simple bash script like this <a href="code-examples/step01_dicom_discover.sh">code-examples/step01_dicom_discover.sh</a></p>
 <p><strong>Example script:</strong></p>
 </div>
 </div>
@@ -11859,11 +11837,6 @@ R/9cer3+f4LdLlzTXzgfAAAAAElFTkSuQmCC
 <span class="nv">SUBJECT_ID</span><span class="o">=</span><span class="s1">'04'</span>
 
 <span class="c1"># ------------------------------------------------------------</span>
-<span class="c1"># Activate the mri environment (or any other environment with heudiconv installed)</span>
-<span class="c1"># ------------------------------------------------------------</span>
-<span class="c1">#conda activate mri # This doesn't work on all systems. Then you need to activate the environment manually.</span>
-
-<span class="c1"># ------------------------------------------------------------</span>
 <span class="c1"># Run the heudiconv</span>
 <span class="c1"># ------------------------------------------------------------</span>
 heudiconv<span class="w"> </span><span class="se">\</span>
@@ -11876,10 +11849,9 @@ heudiconv<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--overwrite
 <span class="c1"># ------------------------------------------------------------</span>
 
-<span class="c1"># Deactivate the conda environment</span>
-<span class="c1"># conda deactivate</span>
-
+<span class="c1"># Copy the dicominfo table outside the hidden directory</span>
 cp<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">OUTPUT_PATH</span><span class="si">}</span><span class="s2">"</span>/.heudiconv/<span class="s2">"</span><span class="si">${</span><span class="nv">SUBJECT_ID</span><span class="si">}</span><span class="s2">"</span>/info/dicominfo.tsv<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">OUTPUT_PATH</span><span class="si">}</span><span class="s2">"</span>
+
 <span class="c1"># ------------------------------------------------------------</span>
 
 <span class="c1"># HeudiConv parameters:</span>
@@ -11913,7 +11885,7 @@ cp<span class="w"> </span><span class="s2">"</span><span class="si">${</span><sp
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="ch">#!./code-examples/step01_dicom_discover.sh</span>
@@ -11952,7 +11924,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>After running the script, the table that we are interested in will be located at <em><code>OUTPUT_PATH/.heudiconv/[subject ID]/info/dicominfo.tsv</code></em>. The .heudiconv directory is a hidden directory and you might not be able to see it in your file system unless you copy it to an unhidden directory which we in fact did (notice the last line in the script).</p>
-<p>Now, you can open the file and keep it open for the next step - creating a heuristic file.</p>
+<p>Now, you can open the <code>dicominfo.tsv</code> file and keep it open for the next step - creating a heuristic file.</p>
 </div>
 </div>
 </div>
@@ -11997,7 +11969,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 <li><p>In this example project, we had multiple functional scans with identical parameters and task names. They correspond to multiple runs of our task. Therefore we add a <code>run</code> key and its value will be added automatically as a 2-digit integer (<em>run-01</em>, <em>run-02</em> etc.).</p>
 </li>
 </ul>
-<p>Next, we create a dictionary <code>info</code> with our template names as keys and empty lists for their values. The values will be filled in in the next step with the <code>for loop</code>.</p>
+<p>Next, we create a dictionary <code>info</code> with our template names as keys and empty lists for their values. The values will be filled in in the next step.</p>
 <div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">anat</span><span class="p">:</span> <span class="p">[],</span>
         <span class="n">fmap_mag</span><span class="p">:</span> <span class="p">[],</span>
@@ -12005,7 +11977,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
         <span class="n">func_task</span><span class="p">:</span> <span class="p">[]</span>
         <span class="p">}</span>
 </pre></div>
-<p>The <code>for loop</code> loops through all our DICOM series that are found in the <code>RAW_PATH</code> that we specify in our HeuDiConv parameters. Here we need to specify the criteria for associating DICOM series with their respective outputs. Now you need to look at the <em>dicominfo.tsv</em> table that we generated in the previous step.</p>
+<p>A <code>for loop</code> loops through all our DICOM series that are found in the <code>RAW_PATH</code> that we specify in our HeuDiConv parameters. Here we need to specify the criteria for associating DICOM series with their respective outputs. Now you need to look at the <em>dicominfo.tsv</em> table that we generated in the previous step.</p>
 <ul>
 <li><p>We only have one DICOM series with <em>MPRAGE</em> in its protocol name. Therefore for the anatomical scan, we don't need to specify any additional cireteria.</p>
 </li>
@@ -12055,7 +12027,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h3 id="Step-3:-Converting-the-data">Step 3: Converting the data<a class="anchor-link" href="#Step-3:-Converting-the-data">¶</a></h3><p>Once our heuristic file is created, we are ready to convert our raw DICOM data to BIDS.</p>
-<p>To do that, we need to make three changes in our <code>code-examples/step01_dicom_discover.sh</code> bash script that we wrote in the first step. We named the edited script <a href="code-examples/step02_dicom_to_bids.sh">code-examples/step02_dicom_to_bids.sh</a>.</p>
+<p>To do that, we need to make three changes in our <em>code-examples/step01_dicom_discover.sh</em> bash script that we wrote in the first step. We named the edited script <a href="code-examples/step02_dicom_to_bids.sh">code-examples/step02_dicom_to_bids.sh</a>.</p>
 <ul>
 <li><p>We need to change the output path because we don't want to put this result in the <em>scratch</em> directory but in the final <em>data</em> directory</p>
 </li>
@@ -12074,7 +12046,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="ch">#!./code-examples/step02_dicom_to_bids.sh</span>
@@ -12101,385 +12073,385 @@ INFO: Processing 13 pre-sorted seqinfo entries
 INFO: Reloading existing filegroup.json because /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/.heudiconv/04/info/04.edit.txt exists
 INFO: Doing conversion using dcm2niix
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/anat/sub-04_T1w (192 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/anat . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:49:02,511 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niixc106neo3/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixc106neo3/convert".
-240909-14:49:02,545 nipype.workflow INFO:
+240910-02:47:04,190 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixlsdmuks6/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixlsdmuks6/convert".
+240910-02:47:04,226 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:49:02,782 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:02.782651:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:49:02.782651:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:49:02,782 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:02.782651:Found 192 DICOM file(s)
-INFO: stdout 2024-09-09T14:49:02.782651:Found 192 DICOM file(s)
-240909-14:49:02,782 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:02.782651:Convert 192 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/anat/sub-04_T1w_heudiconv799 (256x256x192x1)
-INFO: stdout 2024-09-09T14:49:02.782651:Convert 192 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/anat/sub-04_T1w_heudiconv799 (256x256x192x1)
-240909-14:49:05,796 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:05.796518:Conversion required 3.105487 seconds (3.105131 for core code).
-INFO: stdout 2024-09-09T14:49:05.796518:Conversion required 3.105487 seconds (3.105131 for core code).
-240909-14:49:05,833 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 3.178401s.
-INFO: [Node] Finished "convert", elapsed time 3.178401s.
-240909-14:49:05,862 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmeta58rclup5/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmeta58rclup5/embedder".
-240909-14:49:05,872 nipype.workflow INFO:
+240910-02:47:04,463 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:04.463873:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:47:04.463873:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:47:04,464 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:04.463873:Found 192 DICOM file(s)
+INFO: stdout 2024-09-10T02:47:04.463873:Found 192 DICOM file(s)
+240910-02:47:04,464 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:04.463873:Convert 192 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/anat/sub-04_T1w_heudiconv535 (256x256x192x1)
+INFO: stdout 2024-09-10T02:47:04.463873:Convert 192 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/anat/sub-04_T1w_heudiconv535 (256x256x192x1)
+240910-02:47:07,460 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:07.460692:Conversion required 3.093412 seconds (3.093154 for core code).
+INFO: stdout 2024-09-10T02:47:07.460692:Conversion required 3.093412 seconds (3.093154 for core code).
+240910-02:47:07,484 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 3.165543s.
+INFO: [Node] Finished "convert", elapsed time 3.165543s.
+240910-02:47:07,499 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmetacf9wa5ft/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmetacf9wa5ft/embedder".
+240910-02:47:07,509 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:49:08,232 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 2.358719s.
-INFO: [Node] Finished "embedder", elapsed time 2.358719s.
+240910-02:47:09,795 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 2.285313s.
+INFO: [Node] Finished "embedder", elapsed time 2.285313s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/anat/sub-04_T1w.json file
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_magnitude (66 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:49:08,273 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niixmv3aw_go/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixmv3aw_go/convert".
-240909-14:49:08,287 nipype.workflow INFO:
+240910-02:47:09,823 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixuhaz_8r1/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixuhaz_8r1/convert".
+240910-02:47:09,834 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:49:08,373 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:08.373005:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:49:08.373005:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:49:08,373 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:08.373005:Found 66 DICOM file(s)
-INFO: stdout 2024-09-09T14:49:08.373005:Found 66 DICOM file(s)
-240909-14:49:08,373 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:08.373005:Slices not stacked: echo varies (TE 7.65, 5.19; echo 2, 1). Use 'merge 2D slices' option to force stacking
-INFO: stdout 2024-09-09T14:49:08.373005:Slices not stacked: echo varies (TE 7.65, 5.19; echo 2, 1). Use 'merge 2D slices' option to force stacking
-240909-14:49:08,373 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:08.373005:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_magnitude_heudiconv042_e2 (64x64x33x1)
-INFO: stdout 2024-09-09T14:49:08.373005:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_magnitude_heudiconv042_e2 (64x64x33x1)
-240909-14:49:08,400 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:08.400218:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_magnitude_heudiconv042_e1 (64x64x33x1)
-INFO: stdout 2024-09-09T14:49:08.400218:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_magnitude_heudiconv042_e1 (64x64x33x1)
-240909-14:49:08,424 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:08.424915:Conversion required 0.089883 seconds (0.087496 for core code).
-INFO: stdout 2024-09-09T14:49:08.424915:Conversion required 0.089883 seconds (0.087496 for core code).
-240909-14:49:08,467 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 0.178184s.
-INFO: [Node] Finished "convert", elapsed time 0.178184s.
+240910-02:47:09,916 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:09.916701:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:47:09.916701:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:47:09,916 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:09.916701:Found 66 DICOM file(s)
+INFO: stdout 2024-09-10T02:47:09.916701:Found 66 DICOM file(s)
+240910-02:47:09,916 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:09.916701:Slices not stacked: echo varies (TE 7.65, 5.19; echo 2, 1). Use 'merge 2D slices' option to force stacking
+INFO: stdout 2024-09-10T02:47:09.916701:Slices not stacked: echo varies (TE 7.65, 5.19; echo 2, 1). Use 'merge 2D slices' option to force stacking
+240910-02:47:09,917 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:09.916701:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_magnitude_heudiconv204_e2 (64x64x33x1)
+INFO: stdout 2024-09-10T02:47:09.916701:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_magnitude_heudiconv204_e2 (64x64x33x1)
+240910-02:47:09,946 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:09.945921:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_magnitude_heudiconv204_e1 (64x64x33x1)
+INFO: stdout 2024-09-10T02:47:09.945921:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_magnitude_heudiconv204_e1 (64x64x33x1)
+240910-02:47:09,972 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:09.972713:Conversion required 0.096190 seconds (0.095840 for core code).
+INFO: stdout 2024-09-10T02:47:09.972713:Conversion required 0.096190 seconds (0.095840 for core code).
+240910-02:47:10,13 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 0.177976s.
+INFO: [Node] Finished "convert", elapsed time 0.177976s.
 WARNING: For now not embedding BIDS and info generated .nii.gz itself since sequence produced multiple files
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_phasediff (33 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:49:08,483 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niixaq36d0lx/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixaq36d0lx/convert".
-240909-14:49:08,491 nipype.workflow INFO:
+240910-02:47:10,22 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixy6l1uy5t/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixy6l1uy5t/convert".
+240910-02:47:10,34 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:49:08,556 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:08.556191:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:49:08.556191:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:49:08,556 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:08.556191:Found 33 DICOM file(s)
-INFO: stdout 2024-09-09T14:49:08.556191:Found 33 DICOM file(s)
-240909-14:49:08,556 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:08.556191:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_phasediff_heudiconv006_e2_ph (64x64x33x1)
-INFO: stdout 2024-09-09T14:49:08.556191:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_phasediff_heudiconv006_e2_ph (64x64x33x1)
-240909-14:49:08,573 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:08.573179:Conversion required 0.038547 seconds (0.037272 for core code).
-INFO: stdout 2024-09-09T14:49:08.573179:Conversion required 0.038547 seconds (0.037272 for core code).
-240909-14:49:08,613 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 0.120387s.
-INFO: [Node] Finished "convert", elapsed time 0.120387s.
-240909-14:49:08,623 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmeta4sqfpft1/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmeta4sqfpft1/embedder".
-240909-14:49:08,628 nipype.workflow INFO:
+240910-02:47:10,106 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:10.106467:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:47:10.106467:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:47:10,106 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:10.106467:Found 33 DICOM file(s)
+INFO: stdout 2024-09-10T02:47:10.106467:Found 33 DICOM file(s)
+240910-02:47:10,106 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:10.106467:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_phasediff_heudiconv700_e2_ph (64x64x33x1)
+INFO: stdout 2024-09-10T02:47:10.106467:Convert 33 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_phasediff_heudiconv700_e2_ph (64x64x33x1)
+240910-02:47:10,122 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:10.122076:Conversion required 0.035282 seconds (0.034873 for core code).
+INFO: stdout 2024-09-10T02:47:10.122076:Conversion required 0.035282 seconds (0.034873 for core code).
+240910-02:47:10,158 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 0.123243s.
+INFO: [Node] Finished "convert", elapsed time 0.123243s.
+240910-02:47:10,167 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmeta50yo3t44/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmeta50yo3t44/embedder".
+240910-02:47:10,171 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:49:09,141 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 0.511501s.
-INFO: [Node] Finished "embedder", elapsed time 0.511501s.
+240910-02:47:10,594 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 0.421753s.
+INFO: [Node] Finished "embedder", elapsed time 0.421753s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/fmap/sub-04_acq-func_phasediff.json file
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-01_bold (208 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:49:09,153 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niix1zrcxp4y/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niix1zrcxp4y/convert".
-240909-14:49:09,197 nipype.workflow INFO:
+240910-02:47:10,613 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixft1ndpu8/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixft1ndpu8/convert".
+240910-02:47:10,663 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:49:11,84 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:11.084351:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:49:11.084351:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:49:11,84 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:11.084351:Found 208 DICOM file(s)
-INFO: stdout 2024-09-09T14:49:11.084351:Found 208 DICOM file(s)
-240909-14:49:11,84 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:11.084351:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-01_bold_heudiconv750 (64x64x33x208)
-INFO: stdout 2024-09-09T14:49:11.084351:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-01_bold_heudiconv750 (64x64x33x208)
-240909-14:49:16,204 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:16.204398:Conversion required 6.956221 seconds (5.376551 for core code).
-INFO: stdout 2024-09-09T14:49:16.204398:Conversion required 6.956221 seconds (5.376551 for core code).
-240909-14:49:16,240 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 7.041904s.
-INFO: [Node] Finished "convert", elapsed time 7.041904s.
-240909-14:49:16,256 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmetai1vtv8di/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmetai1vtv8di/embedder".
-240909-14:49:16,269 nipype.workflow INFO:
+240910-02:47:10,849 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:10.849485:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:47:10.849485:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:47:10,849 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:10.849485:Found 208 DICOM file(s)
+INFO: stdout 2024-09-10T02:47:10.849485:Found 208 DICOM file(s)
+240910-02:47:10,849 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:10.849485:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-01_bold_heudiconv160 (64x64x33x208)
+INFO: stdout 2024-09-10T02:47:10.849485:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-01_bold_heudiconv160 (64x64x33x208)
+240910-02:47:15,899 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:15.898945:Conversion required 5.191224 seconds (5.188781 for core code).
+INFO: stdout 2024-09-10T02:47:15.898945:Conversion required 5.191224 seconds (5.188781 for core code).
+240910-02:47:15,925 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 5.261588s.
+INFO: [Node] Finished "convert", elapsed time 5.261588s.
+240910-02:47:15,941 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmetadyskaypy/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmetadyskaypy/embedder".
+240910-02:47:15,955 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:49:19,408 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 3.138178s.
-INFO: [Node] Finished "embedder", elapsed time 3.138178s.
+240910-02:47:18,932 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 2.975337s.
+INFO: [Node] Finished "embedder", elapsed time 2.975337s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-01_bold.json file
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-02_bold (208 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:49:19,427 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niix30qjcrx_/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niix30qjcrx_/convert".
-240909-14:49:19,471 nipype.workflow INFO:
+240910-02:47:18,949 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixx7kcn0wv/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixx7kcn0wv/convert".
+240910-02:47:18,986 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:49:21,331 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:21.330952:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:49:21.330952:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:49:21,331 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:21.330952:Found 208 DICOM file(s)
-INFO: stdout 2024-09-09T14:49:21.330952:Found 208 DICOM file(s)
-240909-14:49:21,331 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:21.330952:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-02_bold_heudiconv732 (64x64x33x208)
-INFO: stdout 2024-09-09T14:49:21.330952:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-02_bold_heudiconv732 (64x64x33x208)
-240909-14:49:26,446 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:26.446375:Conversion required 6.930886 seconds (5.336986 for core code).
-INFO: stdout 2024-09-09T14:49:26.446375:Conversion required 6.930886 seconds (5.336986 for core code).
-240909-14:49:26,491 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 7.01834s.
-INFO: [Node] Finished "convert", elapsed time 7.01834s.
-240909-14:49:26,507 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmeta1_wamv_2/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmeta1_wamv_2/embedder".
-240909-14:49:26,523 nipype.workflow INFO:
+240910-02:47:19,172 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:19.172877:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:47:19.172877:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:47:19,173 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:19.172877:Found 208 DICOM file(s)
+INFO: stdout 2024-09-10T02:47:19.172877:Found 208 DICOM file(s)
+240910-02:47:19,173 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:19.172877:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-02_bold_heudiconv192 (64x64x33x208)
+INFO: stdout 2024-09-10T02:47:19.172877:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-02_bold_heudiconv192 (64x64x33x208)
+240910-02:47:24,136 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:24.136183:Conversion required 5.101990 seconds (5.101156 for core code).
+INFO: stdout 2024-09-10T02:47:24.136183:Conversion required 5.101990 seconds (5.101156 for core code).
+240910-02:47:24,177 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 5.18934s.
+INFO: [Node] Finished "convert", elapsed time 5.18934s.
+240910-02:47:24,190 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmeta_a0yon29/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmeta_a0yon29/embedder".
+240910-02:47:24,200 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:49:29,862 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 3.337961s.
-INFO: [Node] Finished "embedder", elapsed time 3.337961s.
+240910-02:47:27,106 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 2.905615s.
+INFO: [Node] Finished "embedder", elapsed time 2.905615s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-02_bold.json file
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-03_bold (208 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:49:29,879 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niixl6cxcba6/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixl6cxcba6/convert".
-240909-14:49:29,917 nipype.workflow INFO:
+240910-02:47:27,123 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixcpqe0ac7/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixcpqe0ac7/convert".
+240910-02:47:27,156 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:49:31,729 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:31.729262:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:49:31.729262:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:49:31,729 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:31.729262:Found 208 DICOM file(s)
-INFO: stdout 2024-09-09T14:49:31.729262:Found 208 DICOM file(s)
-240909-14:49:31,729 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:31.729262:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-03_bold_heudiconv105 (64x64x33x208)
-INFO: stdout 2024-09-09T14:49:31.729262:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-03_bold_heudiconv105 (64x64x33x208)
-240909-14:49:36,669 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:36.669192:Conversion required 6.706886 seconds (5.178815 for core code).
-INFO: stdout 2024-09-09T14:49:36.669192:Conversion required 6.706886 seconds (5.178815 for core code).
-240909-14:49:36,715 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 6.796823s.
-INFO: [Node] Finished "convert", elapsed time 6.796823s.
-240909-14:49:36,734 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmetanxt5_mxg/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmetanxt5_mxg/embedder".
-240909-14:49:36,748 nipype.workflow INFO:
+240910-02:47:27,345 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:27.345449:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:47:27.345449:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:47:27,345 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:27.345449:Found 208 DICOM file(s)
+INFO: stdout 2024-09-10T02:47:27.345449:Found 208 DICOM file(s)
+240910-02:47:27,345 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:27.345449:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-03_bold_heudiconv646 (64x64x33x208)
+INFO: stdout 2024-09-10T02:47:27.345449:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-03_bold_heudiconv646 (64x64x33x208)
+240910-02:47:32,325 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:32.325094:Conversion required 5.119931 seconds (5.118761 for core code).
+INFO: stdout 2024-09-10T02:47:32.325094:Conversion required 5.119931 seconds (5.118761 for core code).
+240910-02:47:32,359 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 5.201626s.
+INFO: [Node] Finished "convert", elapsed time 5.201626s.
+240910-02:47:32,374 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmeta3i5xukeq/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmeta3i5xukeq/embedder".
+240910-02:47:32,389 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:49:39,779 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 3.030531s.
-INFO: [Node] Finished "embedder", elapsed time 3.030531s.
+240910-02:47:35,369 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 2.979447s.
+INFO: [Node] Finished "embedder", elapsed time 2.979447s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-03_bold.json file
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-04_bold (208 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:49:39,797 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niixvpboof9y/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixvpboof9y/convert".
-240909-14:49:39,829 nipype.workflow INFO:
+240910-02:47:35,386 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niix1ycelg51/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niix1ycelg51/convert".
+240910-02:47:35,420 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:49:41,572 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:41.572545:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:49:41.572545:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:49:41,572 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:41.572545:Found 208 DICOM file(s)
-INFO: stdout 2024-09-09T14:49:41.572545:Found 208 DICOM file(s)
-240909-14:49:41,572 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:41.572545:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-04_bold_heudiconv885 (64x64x33x208)
-INFO: stdout 2024-09-09T14:49:41.572545:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-04_bold_heudiconv885 (64x64x33x208)
-240909-14:49:46,493 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:46.493737:Conversion required 6.623574 seconds (5.185250 for core code).
-INFO: stdout 2024-09-09T14:49:46.493737:Conversion required 6.623574 seconds (5.185250 for core code).
-240909-14:49:46,524 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 6.6949950000000005s.
-INFO: [Node] Finished "convert", elapsed time 6.6949950000000005s.
-240909-14:49:46,538 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmetan_py_nm6/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmetan_py_nm6/embedder".
-240909-14:49:46,548 nipype.workflow INFO:
+240910-02:47:35,600 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:35.600682:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:47:35.600682:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:47:35,600 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:35.600682:Found 208 DICOM file(s)
+INFO: stdout 2024-09-10T02:47:35.600682:Found 208 DICOM file(s)
+240910-02:47:35,600 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:35.600682:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-04_bold_heudiconv674 (64x64x33x208)
+INFO: stdout 2024-09-10T02:47:35.600682:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-04_bold_heudiconv674 (64x64x33x208)
+240910-02:47:40,500 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:40.500575:Conversion required 5.039399 seconds (5.038296 for core code).
+INFO: stdout 2024-09-10T02:47:40.500575:Conversion required 5.039399 seconds (5.038296 for core code).
+240910-02:47:40,528 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 5.106568s.
+INFO: [Node] Finished "convert", elapsed time 5.106568s.
+240910-02:47:40,541 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmetaq22yo90e/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmetaq22yo90e/embedder".
+240910-02:47:40,555 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:49:49,583 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 3.034028s.
-INFO: [Node] Finished "embedder", elapsed time 3.034028s.
+240910-02:47:43,508 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 2.951838s.
+INFO: [Node] Finished "embedder", elapsed time 2.951838s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-04_bold.json file
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-05_bold (208 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:49:49,601 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niixa9qwkcdb/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixa9qwkcdb/convert".
-240909-14:49:49,634 nipype.workflow INFO:
+240910-02:47:43,525 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixqu3vsebw/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixqu3vsebw/convert".
+240910-02:47:43,564 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:49:51,370 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:51.370466:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:49:51.370466:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:49:51,370 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:51.370466:Found 208 DICOM file(s)
-INFO: stdout 2024-09-09T14:49:51.370466:Found 208 DICOM file(s)
-240909-14:49:51,370 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:51.370466:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-05_bold_heudiconv548 (64x64x33x208)
-INFO: stdout 2024-09-09T14:49:51.370466:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-05_bold_heudiconv548 (64x64x33x208)
-240909-14:49:56,304 nipype.interface INFO:
-	 stdout 2024-09-09T14:49:56.304319:Conversion required 6.623854 seconds (5.159949 for core code).
-INFO: stdout 2024-09-09T14:49:56.304319:Conversion required 6.623854 seconds (5.159949 for core code).
-240909-14:49:56,340 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 6.704149s.
-INFO: [Node] Finished "convert", elapsed time 6.704149s.
-240909-14:49:56,357 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmetake9ikufa/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmetake9ikufa/embedder".
-240909-14:49:56,369 nipype.workflow INFO:
+240910-02:47:43,747 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:43.747386:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:47:43.747386:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:47:43,747 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:43.747386:Found 208 DICOM file(s)
+INFO: stdout 2024-09-10T02:47:43.747386:Found 208 DICOM file(s)
+240910-02:47:43,747 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:43.747386:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-05_bold_heudiconv978 (64x64x33x208)
+INFO: stdout 2024-09-10T02:47:43.747386:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-05_bold_heudiconv978 (64x64x33x208)
+240910-02:47:48,668 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:48.668608:Conversion required 5.063796 seconds (5.063326 for core code).
+INFO: stdout 2024-09-10T02:47:48.668608:Conversion required 5.063796 seconds (5.063326 for core code).
+240910-02:47:48,694 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 5.128632s.
+INFO: [Node] Finished "convert", elapsed time 5.128632s.
+240910-02:47:48,706 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmetapsy3yewg/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmetapsy3yewg/embedder".
+240910-02:47:48,715 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:49:59,349 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 2.980191s.
-INFO: [Node] Finished "embedder", elapsed time 2.980191s.
+240910-02:47:51,659 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 2.943487s.
+INFO: [Node] Finished "embedder", elapsed time 2.943487s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-05_bold.json file
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-06_bold (208 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:49:59,367 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niix_1qji4hw/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niix_1qji4hw/convert".
-240909-14:49:59,412 nipype.workflow INFO:
+240910-02:47:51,676 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixdyfaq2_h/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixdyfaq2_h/convert".
+240910-02:47:51,715 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:50:00,880 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:00.880113:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:50:00.880113:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:50:00,880 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:00.880113:Found 208 DICOM file(s)
-INFO: stdout 2024-09-09T14:50:00.880113:Found 208 DICOM file(s)
-240909-14:50:00,880 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:00.880113:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-06_bold_heudiconv971 (64x64x33x208)
-INFO: stdout 2024-09-09T14:50:00.880113:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-06_bold_heudiconv971 (64x64x33x208)
-240909-14:50:05,823 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:05.823177:Conversion required 6.362599 seconds (5.192200 for core code).
-INFO: stdout 2024-09-09T14:50:05.823177:Conversion required 6.362599 seconds (5.192200 for core code).
-240909-14:50:05,855 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 6.442001s.
-INFO: [Node] Finished "convert", elapsed time 6.442001s.
-240909-14:50:05,867 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmeta7bah_cr_/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmeta7bah_cr_/embedder".
-240909-14:50:05,879 nipype.workflow INFO:
+240910-02:47:51,898 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:51.898568:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:47:51.898568:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:47:51,898 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:51.898568:Found 208 DICOM file(s)
+INFO: stdout 2024-09-10T02:47:51.898568:Found 208 DICOM file(s)
+240910-02:47:51,898 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:51.898568:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-06_bold_heudiconv810 (64x64x33x208)
+INFO: stdout 2024-09-10T02:47:51.898568:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-06_bold_heudiconv810 (64x64x33x208)
+240910-02:47:56,850 nipype.interface INFO:
+	 stdout 2024-09-10T02:47:56.850802:Conversion required 5.090911 seconds (5.090111 for core code).
+INFO: stdout 2024-09-10T02:47:56.850802:Conversion required 5.090911 seconds (5.090111 for core code).
+240910-02:47:56,878 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 5.161577s.
+INFO: [Node] Finished "convert", elapsed time 5.161577s.
+240910-02:47:56,899 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmetae4lpisqd/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmetae4lpisqd/embedder".
+240910-02:47:56,909 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:50:08,841 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 2.962008s.
-INFO: [Node] Finished "embedder", elapsed time 2.962008s.
+240910-02:47:59,900 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 2.990273s.
+INFO: [Node] Finished "embedder", elapsed time 2.990273s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-06_bold.json file
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-07_bold (208 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:50:08,859 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niixjiw9idc7/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixjiw9idc7/convert".
-240909-14:50:08,900 nipype.workflow INFO:
+240910-02:47:59,918 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixckmzjw91/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixckmzjw91/convert".
+240910-02:47:59,953 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:50:10,222 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:10.222419:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:50:10.222419:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:50:10,222 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:10.222419:Found 208 DICOM file(s)
-INFO: stdout 2024-09-09T14:50:10.222419:Found 208 DICOM file(s)
-240909-14:50:10,222 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:10.222419:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-07_bold_heudiconv967 (64x64x33x208)
-INFO: stdout 2024-09-09T14:50:10.222419:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-07_bold_heudiconv967 (64x64x33x208)
-240909-14:50:15,148 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:15.148008:Conversion required 6.202188 seconds (5.131201 for core code).
-INFO: stdout 2024-09-09T14:50:15.148008:Conversion required 6.202188 seconds (5.131201 for core code).
-240909-14:50:15,178 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 6.27661s.
-INFO: [Node] Finished "convert", elapsed time 6.27661s.
-240909-14:50:15,193 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmetavzc8w5v5/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmetavzc8w5v5/embedder".
-240909-14:50:15,203 nipype.workflow INFO:
+240910-02:48:00,131 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:00.131417:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:48:00.131417:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:48:00,131 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:00.131417:Found 208 DICOM file(s)
+INFO: stdout 2024-09-10T02:48:00.131417:Found 208 DICOM file(s)
+240910-02:48:00,131 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:00.131417:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-07_bold_heudiconv490 (64x64x33x208)
+INFO: stdout 2024-09-10T02:48:00.131417:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-07_bold_heudiconv490 (64x64x33x208)
+240910-02:48:05,76 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:05.076813:Conversion required 5.083813 seconds (5.083478 for core code).
+INFO: stdout 2024-09-10T02:48:05.076813:Conversion required 5.083813 seconds (5.083478 for core code).
+240910-02:48:05,110 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 5.156246s.
+INFO: [Node] Finished "convert", elapsed time 5.156246s.
+240910-02:48:05,124 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmetahox9fi93/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmetahox9fi93/embedder".
+240910-02:48:05,133 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:50:18,143 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 2.939331s.
-INFO: [Node] Finished "embedder", elapsed time 2.939331s.
+240910-02:48:08,347 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 3.213264s.
+INFO: [Node] Finished "embedder", elapsed time 3.213264s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-07_bold.json file
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-08_bold (208 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:50:18,161 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niixzbniypye/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixzbniypye/convert".
-240909-14:50:18,208 nipype.workflow INFO:
+240910-02:48:08,367 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixuhxg08xu/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixuhxg08xu/convert".
+240910-02:48:08,403 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:50:19,541 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:19.541337:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:50:19.541337:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:50:19,541 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:19.541337:Found 208 DICOM file(s)
-INFO: stdout 2024-09-09T14:50:19.541337:Found 208 DICOM file(s)
-240909-14:50:19,541 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:19.541337:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-08_bold_heudiconv180 (64x64x33x208)
-INFO: stdout 2024-09-09T14:50:19.541337:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-08_bold_heudiconv180 (64x64x33x208)
-240909-14:50:24,462 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:24.461973:Conversion required 6.206446 seconds (5.135655 for core code).
-INFO: stdout 2024-09-09T14:50:24.461973:Conversion required 6.206446 seconds (5.135655 for core code).
-240909-14:50:24,488 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 6.279569s.
-INFO: [Node] Finished "convert", elapsed time 6.279569s.
-240909-14:50:24,504 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmetaxwg5oenm/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmetaxwg5oenm/embedder".
-240909-14:50:24,518 nipype.workflow INFO:
+240910-02:48:08,591 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:08.591824:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:48:08.591824:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:48:08,592 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:08.591824:Found 208 DICOM file(s)
+INFO: stdout 2024-09-10T02:48:08.591824:Found 208 DICOM file(s)
+240910-02:48:08,592 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:08.591824:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-08_bold_heudiconv506 (64x64x33x208)
+INFO: stdout 2024-09-10T02:48:08.591824:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-08_bold_heudiconv506 (64x64x33x208)
+240910-02:48:13,506 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:13.506834:Conversion required 5.056046 seconds (5.054361 for core code).
+INFO: stdout 2024-09-10T02:48:13.506834:Conversion required 5.056046 seconds (5.054361 for core code).
+240910-02:48:13,534 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 5.129493s.
+INFO: [Node] Finished "convert", elapsed time 5.129493s.
+240910-02:48:13,545 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmetan14rt5gv/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmetan14rt5gv/embedder".
+240910-02:48:13,554 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:50:27,460 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 2.940659s.
-INFO: [Node] Finished "embedder", elapsed time 2.940659s.
+240910-02:48:16,465 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 2.9093970000000002s.
+INFO: [Node] Finished "embedder", elapsed time 2.9093970000000002s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-08_bold.json file
 INFO: Converting /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-09_bold (208 DICOMs) -&gt; /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func . Converter: dcm2niix . Output types: ('nii.gz',)
-240909-14:50:27,477 nipype.workflow INFO:
-	 [Node] Setting-up "convert" in "/tmp/dcm2niix2oatfizo/convert".
-INFO: [Node] Setting-up "convert" in "/tmp/dcm2niix2oatfizo/convert".
-240909-14:50:27,519 nipype.workflow INFO:
+240910-02:48:16,482 nipype.workflow INFO:
+	 [Node] Setting-up "convert" in "/tmp/dcm2niixv_gz8ly0/convert".
+INFO: [Node] Setting-up "convert" in "/tmp/dcm2niixv_gz8ly0/convert".
+240910-02:48:16,517 nipype.workflow INFO:
 	 [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
 INFO: [Node] Executing "convert" &lt;nipype.interfaces.dcm2nii.Dcm2niix&gt;
-240909-14:50:28,837 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:28.837264:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-INFO: stdout 2024-09-09T14:50:28.837264:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
-240909-14:50:28,837 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:28.837264:Found 208 DICOM file(s)
-INFO: stdout 2024-09-09T14:50:28.837264:Found 208 DICOM file(s)
-240909-14:50:28,837 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:28.837264:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-09_bold_heudiconv859 (64x64x33x208)
-INFO: stdout 2024-09-09T14:50:28.837264:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-09_bold_heudiconv859 (64x64x33x208)
-240909-14:50:33,769 nipype.interface INFO:
-	 stdout 2024-09-09T14:50:33.769014:Conversion required 6.206987 seconds (5.125748 for core code).
-INFO: stdout 2024-09-09T14:50:33.769014:Conversion required 6.206987 seconds (5.125748 for core code).
-240909-14:50:33,804 nipype.workflow INFO:
-	 [Node] Finished "convert", elapsed time 6.283654s.
-INFO: [Node] Finished "convert", elapsed time 6.283654s.
-240909-14:50:33,817 nipype.workflow INFO:
-	 [Node] Setting-up "embedder" in "/tmp/embedmeta_q0n82on/embedder".
-INFO: [Node] Setting-up "embedder" in "/tmp/embedmeta_q0n82on/embedder".
-240909-14:50:33,830 nipype.workflow INFO:
+240910-02:48:16,697 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:16.697388:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+INFO: stdout 2024-09-10T02:48:16.697388:Chris Rorden's dcm2niiX version v1.0.20220505  GCC11.4.0 x86-64 (64-bit Linux)
+240910-02:48:16,697 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:16.697388:Found 208 DICOM file(s)
+INFO: stdout 2024-09-10T02:48:16.697388:Found 208 DICOM file(s)
+240910-02:48:16,697 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:16.697388:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-09_bold_heudiconv647 (64x64x33x208)
+INFO: stdout 2024-09-10T02:48:16.697388:Convert 208 DICOM as /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-09_bold_heudiconv647 (64x64x33x208)
+240910-02:48:21,638 nipype.interface INFO:
+	 stdout 2024-09-10T02:48:21.638742:Conversion required 5.078304 seconds (5.077661 for core code).
+INFO: stdout 2024-09-10T02:48:21.638742:Conversion required 5.078304 seconds (5.077661 for core code).
+240910-02:48:21,665 nipype.workflow INFO:
+	 [Node] Finished "convert", elapsed time 5.147209s.
+INFO: [Node] Finished "convert", elapsed time 5.147209s.
+240910-02:48:21,679 nipype.workflow INFO:
+	 [Node] Setting-up "embedder" in "/tmp/embedmeta1ceqa7n4/embedder".
+INFO: [Node] Setting-up "embedder" in "/tmp/embedmeta1ceqa7n4/embedder".
+240910-02:48:21,692 nipype.workflow INFO:
 	 [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
 INFO: [Node] Executing "embedder" &lt;nipype.interfaces.utility.wrappers.Function&gt;
-240909-14:50:36,756 nipype.workflow INFO:
-	 [Node] Finished "embedder", elapsed time 2.92502s.
-INFO: [Node] Finished "embedder", elapsed time 2.92502s.
+240910-02:48:24,607 nipype.workflow INFO:
+	 [Node] Finished "embedder", elapsed time 2.913914s.
+INFO: [Node] Finished "embedder", elapsed time 2.913914s.
 INFO: Post-treating /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-09_bold.json file
 INFO: Adding "IntendedFor" to the fieldmaps in /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04.
 INFO: Populating template files under /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/
@@ -12516,7 +12488,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -12533,7 +12505,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -12576,7 +12548,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>For functional images, if they are not resting-state scans but involve participants performing a task, you will need to provide details such as trial type, onset, and duration. This data should come from the outputs of your experimental script, so make sure your task is programmed in a way that allows you to easily retrieve the necessary trial and timing information.</p>
+<p>For functional images, if they are not resting-state scans but involve participants performing a task, you will need to provide details such as <em>trial type</em>, <em>onset</em>, and <em>duration</em>. This data should come from the outputs of your experimental script, so make sure your task is programmed in a way that allows you to easily retrieve the necessary trial and timing information.</p>
 <p><strong>For our example subject, we have prepared the final events files, and you will need to copy them into the subject's 'func' folder.</strong></p>
 </div>
 </div>
@@ -12586,7 +12558,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># copy the prepared events</span>
@@ -12602,7 +12574,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">events_file_filled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-01_events.tsv'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)</span>
@@ -12618,7 +12590,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -12820,7 +12792,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Validate-BIDS-structure">Validate BIDS structure<a class="anchor-link" href="#Validate-BIDS-structure">¶</a></h2><p>Once we have our BIDS dataset, we can use an <a href="https://bids-standard.github.io/bids-validator/">online BIDS validator</a> to check if our dataset confirms with BIDS standard and what additional information we might need to include in your dataset's metadata.</p>
+<h3 id="Validate-BIDS-structure">Validate BIDS structure<a class="anchor-link" href="#Validate-BIDS-structure">¶</a></h3><p>Once we have our BIDS dataset, we can use an <a href="https://bids-standard.github.io/bids-validator/">online BIDS validator</a> to check if our dataset confirms with BIDS standard and what additional information we might need to include in your dataset's metadata.</p>
 </div>
 </div>
 </div>
@@ -12841,11 +12813,10 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">bids.layout</span> <span class="kn">import</span> <span class="n">BIDSLayout</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bids.layout</span> <span class="kn">import</span> <span class="n">BIDSLayout</span>
 
 <span class="n">fmri_data_dir</span> <span class="o">=</span> <span class="s1">'FaceProcessing/data'</span>
 
@@ -12864,7 +12835,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>BIDS Layout: ...IC/05_fMRI/FaceProcessing/data | Subjects: 1 | Sessions: 0 | Runs: 9</pre>
 </div>
@@ -12888,7 +12859,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">all_files</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
@@ -12914,7 +12885,7 @@ The first 5 files are:
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>[&lt;BIDSFile filename='/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/CHANGES'&gt;,
  &lt;BIDSJSONFile filename='/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/dataset_description.json'&gt;,
@@ -12942,7 +12913,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">layout</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">return_type</span><span class="o">=</span><span class="s1">'filename'</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
@@ -12956,7 +12927,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>['/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/CHANGES',
  '/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/dataset_description.json',
@@ -12990,7 +12961,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">layout</span><span class="o">.</span><span class="n">get_subjects</span><span class="p">()</span>
@@ -13004,7 +12975,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>['04']</pre>
 </div>
@@ -13016,7 +12987,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">layout</span><span class="o">.</span><span class="n">get_tasks</span><span class="p">()</span>
@@ -13030,7 +13001,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>['faceprocessing']</pre>
 </div>
@@ -13042,7 +13013,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">layout</span><span class="o">.</span><span class="n">get_dataset_description</span><span class="p">()</span>
@@ -13056,7 +13027,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>{'Acknowledgements': 'TODO: whom you want to acknowledge',
  'Authors': ['TODO:', 'First1 Last1', 'First2 Last2', '...'],
@@ -13076,7 +13047,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">layout</span><span class="o">.</span><span class="n">get_tr</span><span class="p">()</span>
@@ -13090,7 +13061,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>2.0</pre>
 </div>
@@ -13113,7 +13084,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">sID</span> <span class="ow">in</span> <span class="n">layout</span><span class="o">.</span><span class="n">get_subjects</span><span class="p">():</span> 
@@ -13152,7 +13123,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Retrieve filenames of all BOLD runs for subject</span>
@@ -13167,7 +13138,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>['/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-01_bold.nii.gz',
  '/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-02_bold.nii.gz',
@@ -13229,7 +13200,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">layout</span><span class="o">.</span><span class="n">get_SpacingBetweenSlices</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s1">'04'</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
@@ -13243,7 +13214,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>[3.9]</pre>
 </div>
@@ -13268,7 +13239,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># write your code here</span>
@@ -13305,7 +13276,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Ask get() to return the ids of subjects that have phasediff (fieldmap_ files)</span>
@@ -13321,7 +13292,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>['04']</pre>
 </div>
@@ -13344,7 +13315,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">layout</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">return_type</span><span class="o">=</span><span class="s1">'dir'</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">'subject'</span><span class="p">)</span>
@@ -13358,7 +13329,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>['/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04']</pre>
 </div>
@@ -13381,7 +13352,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Pick the 7th file in the dataset</span>
@@ -13398,7 +13369,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>&lt;BIDSImageFile filename='/home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-01_bold.nii.gz'&gt;</pre>
 </div>
@@ -13432,7 +13403,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Print all the entities associated with this file, and their values</span>
@@ -13447,7 +13418,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>{'datatype': 'func',
  'extension': '.nii.gz',
@@ -13464,7 +13435,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Print first 30 metadata items associated with this file</span>
@@ -13481,7 +13452,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>{'AcquisitionMatrixPE': 64,
  'AcquisitionNumber': 3,
@@ -13534,7 +13505,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -13550,7 +13521,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>&lt;OrthoSlicer3D: /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data/sub-04/func/sub-04_task-faceprocessing_run-01_bold.nii.gz (64, 64, 33, 208)&gt;</pre>
 </div>
@@ -13591,7 +13562,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Get the first events file</span>
@@ -13610,7 +13581,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -13719,7 +13690,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">participants</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">'participants'</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">'tsv'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -13736,7 +13707,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -13793,7 +13764,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">layout</span><span class="o">.</span><span class="n">parse_file_entities</span><span class="p">(</span><span class="s1">'some_path_to_bids_file/sub-04_task-facerecognition_run-01_bold.nii.gz'</span><span class="p">)</span>
@@ -13807,7 +13778,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[31]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>{'subject': '04',
  'task': 'facerecognition',
@@ -13834,7 +13805,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">layout</span><span class="o">.</span><span class="n">parse_file_entities</span><span class="p">(</span><span class="n">bf</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
@@ -13848,7 +13819,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>{'subject': '04',
  'task': 'faceprocessing',
@@ -13865,7 +13836,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">layout</span><span class="o">.</span><span class="n">parse_file_entities</span><span class="p">(</span><span class="n">bf</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
@@ -13879,7 +13850,7 @@ The first 5 files are:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[33]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>{'task': 'faceprocessing', 'run': 01, 'suffix': 'bold', 'extension': '.nii.gz'}</pre>
 </div>
@@ -13902,7 +13873,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># import the BIDSReport function from the reports submodule</span>
@@ -13928,7 +13899,7 @@ The first 5 files are:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Initialize a report for the dataset</span>

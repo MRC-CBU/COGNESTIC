@@ -5,8 +5,8 @@
 
 Includes:
 
-- code-examples (bash and Python)
-- pre-run Jupyter notebooks
+- code-examples (bash and Python scripts)
+- pre-run Jupyter notebooks as HTML files
 - Jupyter notebooks intended to be run during the workshop
 
 Data files are provided separately and only to workshop attendees.
