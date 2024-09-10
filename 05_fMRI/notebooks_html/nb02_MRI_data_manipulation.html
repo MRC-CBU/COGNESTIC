@@ -7510,7 +7510,7 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f7ec0707">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=41849870">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7521,44 +7521,72 @@ a.anchor-link {
 <li><strong>Date:</strong> August 2024</li>
 <li><strong>conda environment</strong>: I used the <a href="https://github.com/MRC-CBU/COGNESTIC/blob/main/mri_environment.yml">fMRI workshop's conda environment</a> to run this notebook and any accompanied scripts.</li>
 </ul>
-<h1 id="MRI-data-manipulation-with-NiBabel-and-Nilearn">MRI data manipulation with NiBabel and Nilearn<a class="anchor-link" href="#MRI-data-manipulation-with-NiBabel-and-Nilearn">¶</a></h1><p>In neuroimaging research, the ability to efficiently load, inspect, and manipulate MRI data is essential for both exploration and analysis. Python libraries such as <a href="http://nipy.org/nibabel/">NiBabel</a> and <a href="https://nilearn.github.io/stable/index.html">Nilearn</a> provide powerful tools for handling neuroimaging data in common formats like NIfTI. In this tutorial, we will explore how to use these libraries to perform fundamental operations on MRI data, including loading images, inspecting headers, working with affine transformations, and manipulating the data itself.</p>
+<h1 id="MRI-Data-Manipulation-With-NiBabel-and-Nilearn">MRI Data Manipulation With NiBabel and Nilearn<a class="anchor-link" href="#MRI-Data-Manipulation-With-NiBabel-and-Nilearn">¶</a></h1><p>In neuroimaging research, the ability to efficiently load, inspect, and manipulate MRI data is essential for both exploration and analysis. Python libraries such as <a href="http://nipy.org/nibabel/">NiBabel</a> and <a href="https://nilearn.github.io/stable/index.html">Nilearn</a> provide powerful tools for handling neuroimaging data in common formats like NIfTI. In this tutorial, we will explore how to use these libraries to perform fundamental operations on MRI data, including loading images, inspecting headers, working with affine transformations, and manipulating the data itself.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2bc8a9a4">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=51ce86fa">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<p><strong>Table of contents</strong></p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d7bc13af">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>Table of contents</strong><a id="toc0_"></a></p>
 <ol>
-<li>Import required packages and set up the some stuff</li>
-<li>Loading and inspecting images with NiBabel<br/>
-2.1. Header<br/>
-2.2. Data<br/>
-2.3. Affine</li>
-<li>Image manipulation with NiLearn<br/>
-3.1. The mean image<br/>
-3.2. Resample image to a template<br/>
-3.3. Smooth an image<br/>
-3.4. Plotting a time course<br/>
-3.5. Masking an image</li>
+<li><a href="#toc1_">Import required packages and set up the some stuff</a></li>
+<li><a href="#toc2_">Loading and inspecting images with NiBabel</a><br/>
+2.1. <a href="#toc2_1_">Header</a><br/>
+2.2. <a href="#toc2_2_">Data</a><br/>
+2.3. <a href="#toc2_3_">Affine</a></li>
+<li><a href="#toc3_">Image manipulation with NiLearn</a><br/>
+3.1. <a href="#toc3_1_">The mean image</a><br/>
+3.2. <a href="#toc3_2_">Resample image to a template</a><br/>
+3.3. <a href="#toc3_3_">Smooth an image</a><br/>
+3.4. <a href="#toc3_4_">Plotting a time course</a><br/>
+3.5. <a href="#toc3_5_">Masking an image</a></li>
 </ol>
-<hr/>
+<!-- vscode-jupyter-toc-config
+	numbering=true
+	anchor=true
+	flat=true
+	minLevel=2
+	maxLevel=3
+	/vscode-jupyter-toc-config -->
+<!-- THIS CELL WILL BE REPLACED ON TOC UPDATE. DO NOT WRITE YOUR TEXT IN THIS CELL -->
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6267413c">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c0c8837b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Import-required-packages-and-set-up-the-some-stuff">Import required packages and set up the some stuff<a class="anchor-link" href="#Import-required-packages-and-set-up-the-some-stuff">¶</a></h2>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7dbfa39f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="1.-Import-required-packages-and-set-up-the-some-stuff">1. <a id="toc1_"></a><a href="#toc0_">Import required packages and set up the some stuff</a><a class="anchor-link" href="#1.-Import-required-packages-and-set-up-the-some-stuff">¶</a></h2>
 </div>
 </div>
 </div>
@@ -7597,7 +7625,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=5d44e83d">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=200967c6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7637,13 +7665,13 @@ Subject's functional image /home/cognestic/COGNESTIC/05_fMRI/FaceProcessing/data
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=20570403">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4256f393">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Loading-and-inspecting-images-with-NiBabel">Loading and inspecting images with NiBabel<a class="anchor-link" href="#Loading-and-inspecting-images-with-NiBabel">¶</a></h2>
+<h2 id="2.-Loading-and-inspecting-images-with-NiBabel">2. <a id="toc2_"></a><a href="#toc0_">Loading and inspecting images with NiBabel</a><a class="anchor-link" href="#2.-Loading-and-inspecting-images-with-NiBabel">¶</a></h2>
 </div>
 </div>
 </div>
@@ -7692,7 +7720,7 @@ The shape of the functional image: (64, 64, 33, 208)
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8ad9892b">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a277a92f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7708,13 +7736,13 @@ The shape of the functional image: (64, 64, 33, 208)
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=03b272e8">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=705c841c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Header">Header<a class="anchor-link" href="#Header">¶</a></h3><p>Header contains important metadata about the image, including information such as the image dimensions, data type, voxel sizes, and spatial transformation matrices (qform and sform).</p>
+<h3 id="2.1.-Header">2.1. <a id="toc2_1_"></a><a href="#toc0_">Header</a><a class="anchor-link" href="#2.1.-Header">¶</a></h3><p>Header contains important metadata about the image, including information such as the image dimensions, data type, voxel sizes, and spatial transformation matrices (qform and sform).</p>
 </div>
 </div>
 </div>
@@ -7893,7 +7921,7 @@ We can access the value stored by a given key by typing: <code>anat_header['&lt;
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d83a1c0e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0b10432c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7904,13 +7932,13 @@ We can access the value stored by a given key by typing: <code>anat_header['&lt;
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c43f3b02">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=46dc2a10">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Data">Data<a class="anchor-link" href="#Data">¶</a></h3><p>As demonstrated above, the header contains valuable metadata about the MRI data we’ve loaded. Next, we’ll move on to accessing the actual image data itself, which can be done using the <code>get_fdata()</code> method.</p>
+<h3 id="2.2.-Data">2.2. <a id="toc2_2_"></a><a href="#toc0_">Data</a><a class="anchor-link" href="#2.2.-Data">¶</a></h3><p>As demonstrated above, the header contains valuable metadata about the MRI data we’ve loaded. Next, we’ll move on to accessing the actual image data itself, which can be done using the <code>get_fdata()</code> method.</p>
 </div>
 </div>
 </div>
@@ -8199,7 +8227,7 @@ BOLD image shape is (64, 64, 33, 208)
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e3b006ca">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=db4b0f4d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8235,13 +8263,13 @@ BOLD image shape is (64, 64, 33, 208)
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d33f9db8">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4e9813d6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Affine">Affine<a class="anchor-link" href="#Affine">¶</a></h3><p>The final important piece of metadata associated with an image file is the <strong>affine matrix</strong>, a 4x4 matrix which defines how the voxel grid of the image is positioned, oriented, and scaled relative to the scanner or reference space. Without the affine matrix, the voxel coordinates are just abstract numbers. With it, you know how the image data aligns with the real world, enabling comparisons and transformations between different images or scans.</p>
+<h3 id="2.3.-Affine">2.3. <a id="toc2_3_"></a><a href="#toc0_">Affine</a><a class="anchor-link" href="#2.3.-Affine">¶</a></h3><p>The final important piece of metadata associated with an image file is the <strong>affine matrix</strong>, a 4x4 matrix which defines how the voxel grid of the image is positioned, oriented, and scaled relative to the scanner or reference space. Without the affine matrix, the voxel coordinates are just abstract numbers. With it, you know how the image data aligns with the real world, enabling comparisons and transformations between different images or scans.</p>
 <p>For example, if we have the voxel coordinate (26, 30, 16), without additional information, we wouldn’t know if this position is on the left or right side of the brain, or if it came from the left or right of the scanner. This is because the scanner can collect voxel data in almost any arbitrary position and orientation within the magnet.</p>
 <p>For example, BOLD images are typically acquired at a different angle and with smaller coverage than T1-weighted anatomical images, resulting in different bounding boxes.</p>
 <img align="centre" alt="No description has been provided for this image" src="https://nipy.org/nibabel/_images/localizer.png" width="50%"/>
@@ -8444,7 +8472,7 @@ BOLD image shape is (64, 64, 33, 208)
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fcc055d5">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=898e049f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8475,24 +8503,24 @@ BOLD image shape is (64, 64, 33, 208)
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b419dfef">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cb0126bf">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Image-manipulation-with-NiLearn">Image manipulation with NiLearn<a class="anchor-link" href="#Image-manipulation-with-NiLearn">¶</a></h2>
+<h2 id="3.-Image-manipulation-with-NiLearn">3. <a id="toc3_"></a><a href="#toc0_">Image manipulation with NiLearn</a><a class="anchor-link" href="#3.-Image-manipulation-with-NiLearn">¶</a></h2>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0e13e2b7">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cc96d515">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="The-mean-image">The mean image<a class="anchor-link" href="#The-mean-image">¶</a></h3><p>If you're using NiBabel to compute the mean image, you first need to load the image, extract the data, and then compute the mean manually.</p>
+<h3 id="3.1.-The-mean-image">3.1. <a id="toc3_1_"></a><a href="#toc0_">The mean image</a><a class="anchor-link" href="#3.1.-The-mean-image">¶</a></h3><p>If you're using NiBabel to compute the mean image, you first need to load the image, extract the data, and then compute the mean manually.</p>
 <p>However, with Nilearn, you can achieve the same result in a single line using the <code>mean_img</code> function.</p>
 </div>
 </div>
@@ -8550,7 +8578,7 @@ BOLD image shape is (64, 64, 33, 208)
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=27c421cf">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e9de3803">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8642,13 +8670,13 @@ BOLD image shape is (64, 64, 33, 208)
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=553f7a53">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=416be32b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Resample-image-to-a-template">Resample image to a template<a class="anchor-link" href="#Resample-image-to-a-template">¶</a></h3><p>Using the <code>resample_to_img</code> function from Nilearn, we can resample one image to match the dimensions of another. For example, let’s resample an anatomical T1 image to match the dimensions of the mean image we computed earlier.</p>
+<h3 id="3.2.-Resample-image-to-a-template">3.2. <a id="toc3_2_"></a><a href="#toc0_">Resample image to a template</a><a class="anchor-link" href="#3.2.-Resample-image-to-a-template">¶</a></h3><p>Using the <code>resample_to_img</code> function from Nilearn, we can resample one image to match the dimensions of another. For example, let’s resample an anatomical T1 image to match the dimensions of the mean image we computed earlier.</p>
 </div>
 </div>
 </div>
@@ -8728,7 +8756,7 @@ BOLD image shape is (64, 64, 33, 208)
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bf113e32">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a1b8292f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8751,7 +8779,7 @@ BOLD image shape is (64, 64, 33, 208)
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>&lt;nilearn.plotting.displays._slicers.OrthoSlicer at 0x7aa31be67850&gt;</pre>
+<pre>&lt;nilearn.plotting.displays._slicers.OrthoSlicer at 0x732a42a4f190&gt;</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
@@ -8769,17 +8797,17 @@ BOLD image shape is (64, 64, 33, 208)
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1246eca5">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fe48555e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Smooth-an-image">Smooth an image<a class="anchor-link" href="#Smooth-an-image">¶</a></h3><p>Using the <code>smooth_img</code> function from Nilearn, we can easily apply smoothing to any type of MRI image. For example, let’s take the mean image from above and apply smoothing with different full width at half maximum (FWHM) values to see how smoothing affects the image.</p>
+<h3 id="3.3.-Smooth-an-image">3.3. <a id="toc3_3_"></a><a href="#toc0_">Smooth an image</a><a class="anchor-link" href="#3.3.-Smooth-an-image">¶</a></h3><p>Using the <code>smooth_img</code> function from Nilearn, we can easily apply smoothing to any type of MRI image. For example, let’s take the mean image from above and apply smoothing with different full width at half maximum (FWHM) values to see how smoothing affects the image.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3f4aaea7">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4ee484ae">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8827,13 +8855,13 @@ BOLD image shape is (64, 64, 33, 208)
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5f301cf0">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=32a68b81">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Plotting-a-time-course">Plotting a time course<a class="anchor-link" href="#Plotting-a-time-course">¶</a></h3>
+<h3 id="3.4.-Plotting-a-time-course">3.4. <a id="toc3_4_"></a><a href="#toc0_">Plotting a time course</a><a class="anchor-link" href="#3.4.-Plotting-a-time-course">¶</a></h3>
 </div>
 </div>
 </div>
@@ -8954,7 +8982,7 @@ The random voxel of the BOLD image in the world coordinates is [16.068 45.555 35
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=d9fe062f">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2c4e7c53">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8978,7 +9006,7 @@ The random voxel of the BOLD image in the world coordinates is [16.068 45.555 35
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>&lt;matplotlib.legend.Legend at 0x7aa3130eb650&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x732a39aa7c10&gt;</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
@@ -8990,13 +9018,13 @@ The random voxel of the BOLD image in the world coordinates is [16.068 45.555 35
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4b890d04">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=96f3fda2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Masking-an-image">Masking an image<a class="anchor-link" href="#Masking-an-image">¶</a></h3>
+<h3 id="3.5.-Masking-an-image">3.5. <a id="toc3_5_"></a><a href="#toc0_">Masking an image</a><a class="anchor-link" href="#3.5.-Masking-an-image">¶</a></h3>
 </div>
 </div>
 </div>
