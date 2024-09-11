@@ -7533,7 +7533,7 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="fMRI-Data-Analysis:-Subject-Level-Analysis">fMRI Data Analysis: Subject-Level Analysis<a class="anchor-link" href="#fMRI-Data-Analysis:-Subject-Level-Analysis">¶</a></h1><p>Once the data have been pre-processed, we can proceed to the analysis. In this tutorial, we will focus on subject-level (or first-level) fMRI data analysis using <a href="https://nilearn.github.io/stable/index.html">Nilearn</a>. This process involves constructing a design matrix, fitting the model to the data, and computing beta maps (i.e., the estimated response for each condition) or contrast maps. Subject-level analysis is a crucial step before progressing to group-level analysis.</p>
 <p>For analysing fMRI data, we commonly use general linear model (GLM). A GLM in fMRI analysis has the <strong>BOLD signal</strong> as the <strong>outcome</strong> variable (derived from the pre-processed functional MRI images) and <strong>predictor</strong> variables such as <strong>events</strong> (e.g., task conditions) and <strong>confounds</strong> (e.g., motion parameters). Typically analysis is performed by constructing a separate model for each voxel - <strong>a mass univariate approach</strong>.</p>
-<p>For more information on GLM, please see <a href="../../02_Statistics/cognestic_stats_python.ipynb">Rik's Stats tutorial</a> (corresponding <a href="https://github.com/MRC-CBU/COGNESTIC/tree/main/02_Statistics">web link</a>).</p>
+<p>For more information on GLM, please see <a href="../../02_Statistics/cognestic_stats_python.html">Rik's Stats tutorial</a> (corresponding <a href="https://github.com/MRC-CBU/COGNESTIC/tree/main/02_Statistics">web link</a>).</p>
 <p>And here are some recommended short videos to help better understand the principles of fMRI analysis:</p>
 </div>
 </div>
@@ -7743,7 +7743,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="3.-Setting-up-GLM-model-components">3. <a id="toc3_"></a><a href="#toc0_">Setting up GLM model components</a><a class="anchor-link" href="#3.-Setting-up-GLM-model-components">¶</a></h2><p>Remember (or refer to <a href="../../02_Statistics/cognestic_stats_python.ipynb">Rik's stats</a>) that GLM typically expressed as <strong>Y = XB + e</strong>, where <strong>Y</strong> is a vector containing the data, <strong>X</strong> is the 'design matrix' that defines the model for the data, <strong>B</strong> (or 'Betas') is a vector of parameters to be estimated, and <strong>e</strong> represents random error.</p>
+<h2 id="3.-Setting-up-GLM-model-components">3. <a id="toc3_"></a><a href="#toc0_">Setting up GLM model components</a><a class="anchor-link" href="#3.-Setting-up-GLM-model-components">¶</a></h2><p>Remember (or refer to <a href="../../02_Statistics/cognestic_stats_python.html">Rik's stats</a>) that GLM typically expressed as <strong>Y = XB + e</strong>, where <strong>Y</strong> is a vector containing the data, <strong>X</strong> is the 'design matrix' that defines the model for the data, <strong>B</strong> (or 'Betas') is a vector of parameters to be estimated, and <strong>e</strong> represents random error.</p>
 <p>In the next sections, we will set up our GLM model by specifying the following:</p>
 <ul>
 <li><strong>The data (Y)</strong>, which are our pre-processed functional images. These contain the time series data (length n; 210 in our case) for each voxel.</li>
@@ -10909,7 +10909,7 @@ oFPxLKE3aVFeG4iMr4HZBhLOwHeY5FPyBDePMjkaAA26wWef3rxF+GlATU0e/yVy4A0AuF4wiweD
 gD4vYjAX3X+fePMQyKmw1oHXHSmBnJeo2qUbE+WfJn9ISwFHmcHKnqgf5yVL3sTAoYwYRL5LDa3J
 x4CCE8vMn5GjFIa1mARjlwAAAA==
 "/></p>
-<p>Applying a threshold, particularly one that corrects for multiple comparisons (e.g., using Family-Wise Error (FWE) or False Discovery Rate (FDR) corrections), helps ensure that the displayed activations are statistically reliable. For more information on multiple comparisons correction, see <a href="../../02_Statistics/cognestic_stats_python.ipynb">Rik’s Stats tutorial</a>.</p>
+<p>Applying a threshold, particularly one that corrects for multiple comparisons (e.g., using Family-Wise Error (FWE) or False Discovery Rate (FDR) corrections), helps ensure that the displayed activations are statistically reliable. For more information on multiple comparisons correction, see <a href="../../02_Statistics/cognestic_stats_python.html">Rik’s Stats tutorial</a>.</p>
 </div>
 </div>
 </div>
