@@ -11832,7 +11832,7 @@ R/9cer3+f4LdLlzTXzgfAAAAAElFTkSuQmCC
 "/></p>
 <p>The column names are metadata fields and rows contain their corresponding values. To generate such a table, you would run the following command in the terminal:</p>
 <p><code>heudiconv --files mridata/CBU090928_MR09029/*/*/*.dcm --outdir FaceProcessing/scratch/dicom_discovery --heuristic convertall --subjects '04' --converter none --bids --overwrite</code></p>
-<p>However, command lines are error-prone and not easily reproducible. Instead, we recommend writing a simple bash script like this <a href="code-examples/step01_dicom_discover.sh">code-examples/step01_dicom_discover.sh</a></p>
+<p>However, command lines are error-prone and not easily reproducible. Instead, we recommend writing a simple bash script like this <a href="../code-examples/step01_dicom_discover.sh">code-examples/step01_dicom_discover.sh</a></p>
 <p><strong>Example script:</strong></p>
 </div>
 </div>
@@ -11965,7 +11965,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The heuristic file must be a <code>Python</code> file. You can create and edit Python files in any text editor. You can name the file anything you want. For example, <code>bids_heuristic.py</code> like we have named our file which is available here: <a href="code-examples/bids_heuristic.py">code-examples/bids_heuristic.py</a>.</p>
+<p>The heuristic file must be a <code>Python</code> file. You can create and edit Python files in any text editor. You can name the file anything you want. For example, <code>bids_heuristic.py</code> like we have named our file which is available here: <a href="../code-examples/bids_heuristic.py">code-examples/bids_heuristic.py</a>.</p>
 <p>We need to specify the conversion template for each DICOM series. The template can be anything you want. In this particular case, we want it to be in BIDS format. Therefore for each of our scan types, we need to consult BIDS specification. A good starting point is to look at the BIDS starter kit <a href="https://bids-standard.github.io/bids-starter-kit/folders_and_files/folders.html">folders</a> and <a href="https://bids-standard.github.io/bids-starter-kit/folders_and_files/files.html">filenames</a>. (See the full BIDS specification for MRI <a href="https://bids-specification.readthedocs.io/en/stable/modality-specific-files/magnetic-resonance-imaging-data.html">here</a>.)</p>
 <p>Following these guidelines, we define the template (folder structure and filenames) for our anatomical, fieldmap, and functional scans. (We don't need to worry about the BIDS-required metadata, HeuDiConv will generate the required metadata for us.)</p>
 <div class="highlight"><pre><span></span><span class="c1"># The structural/anatomical scan</span>
@@ -12046,7 +12046,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h3 id="3.3.-Step-3:-Converting-the-data">3.3. <a id="toc3_3_"></a><a href="#toc0_">Step 3: Converting the data</a><a class="anchor-link" href="#3.3.-Step-3:-Converting-the-data">¶</a></h3><p>Once our heuristic file is created, we are ready to convert our raw DICOM data to BIDS.</p>
-<p>To do that, we need to make three changes in our <em>code-examples/step01_dicom_discover.sh</em> bash script that we wrote in the first step. We named the edited script <a href="code-examples/step02_dicom_to_bids.sh">code-examples/step02_dicom_to_bids.sh</a>.</p>
+<p>To do that, we need to make three changes in our <em>code-examples/step01_dicom_discover.sh</em> bash script that we wrote in the first step. We named the edited script <a href="../code-examples/step02_dicom_to_bids.sh">code-examples/step02_dicom_to_bids.sh</a>.</p>
 <ul>
 <li><p>We need to change the output path because we don't want to put this result in the <em>scratch</em> directory but in the final <em>data</em> directory</p>
 </li>
@@ -12709,7 +12709,7 @@ INFO: PROCESSING DONE: {'subject': '04', 'outdir': '/home/cognestic/COGNESTIC/05
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>If you are interested how we obtained the events information from the OpenNeuro dataset, have a look at these two scripts: <a href="code-examples/step03_events_to_bids.py">code-examples/step03_events_to_bids.py</a> and <a href="code-examples/step04_transform_events.py">code-examples/step04_transform_events.py</a></p>
+<p>If you are interested how we obtained the events information from the OpenNeuro dataset, have a look at these two scripts: <a href="code-examples/step03_events_to_bids.py">code-examples/step03_events_to_bids.py</a> and <a href="../code-examples/step04_transform_events.py">code-examples/step04_transform_events.py</a></p>
 </div>
 </div>
 </div>
