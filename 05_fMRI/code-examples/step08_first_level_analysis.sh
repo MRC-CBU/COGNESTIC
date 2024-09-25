@@ -15,7 +15,7 @@ PROJECT_PATH='/imaging/correia/da05/workshops/Wakeman-ds'
 OUT_PATH="$PROJECT_PATH"/results
 
 # Location of the first-level python script
-SCRIPT_PATH="$PROJECT_PATH"/code/preprocessing/first_level_script.py
+SCRIPT_PATH="$PROJECT_PATH"/code/analysis/first_level_script.py
 
 # Path to the job logs
 JOB_DIR="$PROJECT_PATH"/scratch/first-level_job_logs
