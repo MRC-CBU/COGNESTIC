@@ -1,7 +1,14 @@
 #!/bin/bash
 
-PROJECT_PATH="/mnt/c/COGNESTIC/05_fMRI/FaceProcessing"
+# ============================================================
+# MRIQC with Docker
+#
+# Pull the Docker image
+# docker pull nipreps/mriqc
+#
+# ============================================================
 
+PROJECT_PATH="/mnt/c/COGNESTIC/05_fMRI/FaceProcessing"
 sid="04"
 
 docker run --rm -it \

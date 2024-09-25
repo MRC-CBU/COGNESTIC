@@ -1,7 +1,14 @@
 #!/bin/bash
 
-PROJECT_PATH="/mnt/c/COGNESTIC/05_fMRI/FaceProcessing"
+# ============================================================
+# fMRIPrep with Docker
+#
+# Pull the Docker image
+# docker pull nipreps/fmriprep
+#
+# ============================================================
 
+PROJECT_PATH="/mnt/c/COGNESTIC/05_fMRI/FaceProcessing"
 sid="04"
 
 docker run --rm -it \
