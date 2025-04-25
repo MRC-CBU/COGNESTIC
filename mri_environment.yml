@@ -1,0 +1,41 @@
+name: mri
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - dcm2niix=1.0.20240202
+  - heudiconv=1.1.6
+  - nipype=1.8.5
+  - pip=24.2
+  - pytest=8.3.2
+  - python=3.11.10 # dipy v1.9.0 dependency >=3.9, <3.12
+  - seaborn=0.13.2
+  - traits=6.4.3
+  - wheel=0.44.0
+  - pip:
+      - antspyx==0.5.3
+      - atlasreader==0.3.2
+      - dipy==1.9.0
+      - fury==0.11.0 # dipy v1.9.0 viualisation didn't work with fury 0.10.0
+      - ipykernel==6.29.3
+      - ipython==8.22.1
+      - jupyter==1.0.0
+      - matplotlib==3.8.3
+      - nibabel==5.2.1
+      - nilearn==0.10.4
+      - nipy==0.6.0
+      - numpy==1.26.4 # dipy v1.9.0 dependency >=1.21.6, <1.27.0
+      - nxviz==0.7.4
+      - pandas==2.2.2
+      - plotly==5.23.0
+      - pybids==0.16.4
+      - python-louvain==0.16
+      - requests==2.31.0
+      - rsatoolbox==0.1.5
+      - scikit-image==0.24.0
+      - scikit-learn==1.5.1
+      - scipy==1.14.0
+
+# After installation, to ensure the ipykernel is properly installed and set up:
+# conda activate mri
+# python -m ipykernel install --user --name mri --display-name "Python (mri)"
