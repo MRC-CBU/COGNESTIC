@@ -13,7 +13,7 @@
 # ============================================================
 
 # ------------------------------------------------------------
-# Define your paths
+# Define your paths (assuming the working directory is the script's directory)
 # ------------------------------------------------------------
 
 # Path to the raw DICOM files

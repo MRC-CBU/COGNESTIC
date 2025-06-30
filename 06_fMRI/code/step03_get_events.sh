@@ -4,10 +4,9 @@
 # -----------------------------------------------------------------------
 # Specify the parameters for downloading event files
 # -----------------------------------------------------------------------
-BIDSPATH="../FaceRecognition/data"
+BIDSPATH="/home/cognestic/COGNESTIC/06_fMRI/FaceRecognition/data"
 runs_to_download=$(seq -w 01 09)
 subject_id="sub-15"
-
 
 # -----------------------------------------------------------------------
 # The output path for the event files
