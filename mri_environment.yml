@@ -16,7 +16,7 @@ dependencies:
       - atlasreader==0.3.2
       - dipy==1.9.0
       - dcmstack==0.9
-      - fury==0.11.0 # dipy v1.9.0 viualisation didn't work with fury 0.10.0
+      - fury==0.11.0 # dipy v1.9.0 visualisation didn't work with fury 0.10.0
       - ipykernel==6.29.3
       - ipython==8.22.1
       - jupyter==1.0.0
