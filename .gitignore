@@ -13,6 +13,7 @@ Simplified
 *.fif
 *.nii*
 *.json
+*.csv
 
 ### RSA demos ###
 *_demos
