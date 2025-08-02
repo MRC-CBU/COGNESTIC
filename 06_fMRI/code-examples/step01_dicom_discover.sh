@@ -8,36 +8,36 @@
 #       conda ativate mri 
 #   2. cd to the directory where this script is located
 #   3. Run the script:
-#       ./step02_dicom_to_bids.sh
-#  
+#       ./step01_dicom_discover.sh
+#
 # ============================================================
 
 # ------------------------------------------------------------
-# Define your paths (assuming the working directory is the script's directory)
+# Define your paths
 # ------------------------------------------------------------
+
+# Change directory to the location of this script
+cd "$(dirname "$0")" || exit
 
 # Path to the raw DICOM files
 DICOM_PATH='../mridata/CBU090962_MR09029' # define either full path or relative to the script
 
 # Location of the output data (it will be created if it doesn't exist)
-OUTPUT_PATH='../FaceRecognition/data'
+OUTPUT_PATH='../FaceRecognition/scratch/dicom_discovery'
 
 # Subject ID
 SUBJECT_ID='15'
-
-HEURISTIC_FILE='bids_heuristic.py'
 
 # ------------------------------------------------------------
 # Run the heudiconv
 # ------------------------------------------------------------
 heudiconv \
-    --files "${DICOM_PATH}"/*/*/*.dcm \
-    --outdir "${OUTPUT_PATH}" \
-    --heuristic "$HEURISTIC_FILE" \
-    --subjects "${SUBJECT_ID}" \
-    --converter dcm2niix \
-    --bids \
-    --overwrite
+--files "${DICOM_PATH}" \
+--outdir "${OUTPUT_PATH}" \
+--heuristic convertall \
+--subjects "${SUBJECT_ID}" \
+--converter none \
+--bids
 # ------------------------------------------------------------
 
 # HeudiConv parameters:
@@ -47,6 +47,5 @@ heudiconv \
 # --subjects: Subject ID
 # --converter : dicom to nii converter (dcm2niix or none)
 # --bids: Flag for output into BIDS structure
-# --overwrite: Flag to overwrite existing files
-# 
-# For a full list of parameters, see: https://heudiconv.readthedocs.io/en/latest/usage.html 
+#
+# For a full list of parameters, see: https://heudiconv.readthedocs.io/en/latest/usage.html
