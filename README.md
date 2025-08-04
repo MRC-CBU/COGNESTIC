@@ -19,6 +19,5 @@ The hands-on workshop comprises ten modules. We use three different `conda` envi
 | 09\_MVPA_MRI           | mri                   | [Danny Mitchell](https://www.mrc-cbu.cam.ac.uk/people/daniel.mitchell)      |
 | 10_MVPA_EEG_MEG        | mne                   | [Máté Aller](https://www.mrc-cbu.cam.ac.uk/people/mate.aller)       |
 
-The [stats](stats_environment.yml) and [mri](mri_environment.yml) environment files are available in this repository.
 
 For workshop attendees, all materials, data, and environments will be available and pre-configured on virtual machines, which will be provided for the duration of the workshop.
