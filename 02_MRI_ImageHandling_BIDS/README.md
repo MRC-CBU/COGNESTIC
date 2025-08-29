@@ -5,10 +5,9 @@
 
 Includes:
 
-- code-examples (bash and Python scripts)
 - pre-run Jupyter notebooks as HTML files
 - Jupyter notebooks intended to be run during the workshop
 
 Data files are provided separately and only to workshop attendees.
 
-[mri conda environment](../mri_environment.yml) is used to run the notebook and any accompanied scripts.
+[mri conda environment](../mri_environment.yml) is used to run the notebooks and any accompanied scripts.

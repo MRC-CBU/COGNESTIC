@@ -7,7 +7,7 @@
 # The script calls the 'mriqc_script.sh' bash script for each subject in the "$PROJECT_PATH"/data/sub-*.
 #
 # Usage:
-#   Configure the variables below and run the script: ./step03_mriqc_subjects.sh
+#   Configure the variables below and run the script: ./step04_mriqc_subjects.sh
 #
 # ============================================================
 

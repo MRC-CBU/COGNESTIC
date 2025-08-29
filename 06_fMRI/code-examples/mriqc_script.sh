@@ -3,16 +3,16 @@
 # ============================================================
 # MRIQC with Apptainer
 #
-# The script requres step05_mriqc_subjects.sh, unless you define Project_path and subject here manually.
+# The script requres step04_mriqc_subjects.sh, unless you define Project_path and subject here manually.
 #
-# This script uses MRIQC Singularity image
+# This script uses MRIQC Apptainer image
 # To get the latest Docker image (or Singluarity/Apptainer) use: 
 # docker pull nipreps/mriqc:latest
 #
 # ============================================================
 
 # ------------------------------------------------------------
-# The passed variables from step03_mriqc_subjects.sh
+# The passed variables from step04_mriqc_subjects.sh
 # ------------------------------------------------------------
 PROJECT_PATH=($1)
 task_id=$SLURM_ARRAY_TASK_ID

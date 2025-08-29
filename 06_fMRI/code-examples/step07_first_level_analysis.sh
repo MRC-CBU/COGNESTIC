@@ -6,7 +6,7 @@
 #
 # Usage:
 #   Activate the required conda environment.
-#   Configure the variables below and run the script: ./step06_first_level_analysis.sh
+#   Configure the variables below and run the script: ./step07_first_level_analysis.sh
 #-----------------------------------------------------------
 
 # Your project's root directory
