@@ -7517,6 +7517,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>COGNESTIC-2025</strong></p>
 <ul>
 <li><strong>Author:</strong> <a href="https://www.mrc-cbu.cam.ac.uk/people/dace.apsvalka/">Dace Apšvalka</a></li>
 <li><strong>Date:</strong> August 2025</li>
@@ -7532,7 +7533,13 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="fMRI-Data-Analysis:-Subject-Level-Analysis">fMRI Data Analysis: Subject-Level Analysis<a class="anchor-link" href="#fMRI-Data-Analysis:-Subject-Level-Analysis">¶</a></h1><p>Once the data have been pre-processed, we can proceed to the analysis. In this tutorial, we will focus on subject-level (or first-level) fMRI data analysis using <a href="https://nilearn.github.io/stable/index.html">Nilearn</a>. This process involves constructing a design matrix, fitting the model to the data, and computing beta maps (i.e., the estimated response for each condition) or contrast maps. Subject-level analysis is a crucial step before progressing to group-level analysis.</p>
+<h1 id="fMRI-Data-Analysis:-Subject-Level-Analysis">fMRI Data Analysis: Subject-Level Analysis<a class="anchor-link" href="#fMRI-Data-Analysis:-Subject-Level-Analysis">¶</a></h1><p>Once the data have been pre-processed, we can proceed to the analysis. In this tutorial, we will focus on subject-level (or first-level) fMRI data analysis using <a href="https://nilearn.github.io/stable/index.html">Nilearn</a>. This process involves:</p>
+<ul>
+<li>constructing a design matrix,</li>
+<li>fitting the model to the data, and</li>
+<li>computing beta maps (i.e., the estimated response for each condition) or contrast maps.</li>
+</ul>
+<p>Subject-level analysis is a crucial step before progressing to group-level analysis.</p>
 <p>For analysing fMRI data, we commonly use general linear model (GLM). A GLM in fMRI analysis has the <strong>BOLD signal</strong> as the <strong>outcome</strong> variable (derived from the pre-processed functional MRI images) and <strong>predictor</strong> variables such as <strong>events</strong> (e.g., task conditions) and <strong>confounds</strong> (e.g., motion parameters). Typically analysis is performed by constructing a separate model for each voxel - <strong>a mass univariate approach</strong>.</p>
 <p>For more information on GLM, please see <a href="../03_Statistics/nb03_general_stats.ipynb">Rik's Stats tutorial</a>.</p>
 <p>And here are some recommended short videos to help better understand the principles of fMRI analysis:</p>
@@ -7690,7 +7697,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Retrieve-the-preprocessed-(fMRIprep)-data">Retrieve the preprocessed (fMRIprep) data<a class="anchor-link" href="#Retrieve-the-preprocessed-(fMRIprep)-data">¶</a></h2><p>BIDS applications, such as <code>fMRIprep</code>, output data into a data structure similar to <code>BIDS</code> organization principals. And these data also can be inspected using <a href="https://bids-standard.github.io/pybids/index.html">PyBIDS</a>.</p>
+<h2 id="Retrieve-the-preprocessed-(fMRIprep)-data">Retrieve the preprocessed (fMRIprep) data<a class="anchor-link" href="#Retrieve-the-preprocessed-(fMRIprep)-data">¶</a></h2><p>BIDS Apps, such as <code>fMRIprep</code>, output data into a data structure similar to <code>BIDS</code> organisation principals. And these data also can be inspected using <a href="https://bids-standard.github.io/pybids/index.html">PyBIDS</a>.</p>
 </div>
 </div>
 </div>
@@ -7722,7 +7729,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Setting-up-GLM-model-components">Setting up GLM model components<a class="anchor-link" href="#Setting-up-GLM-model-components">¶</a></h2><p>Remember (or refer to <a href="../03_Statistics/nb03_general_stats.ipynb">Rik's stats</a>) that GLM typically expressed as <strong>Y = XB + e</strong>, where <strong>Y</strong> is a vector containing the data, <strong>X</strong> is the 'design matrix' that defines the model for the data, <strong>B</strong> (or 'Betas') is a vector of parameters to be estimated, and <strong>e</strong> represents random error.</p>
+<h2 id="Setting-up-GLM-model-components">Setting up GLM model components<a class="anchor-link" href="#Setting-up-GLM-model-components">¶</a></h2><p>Remember (or refer to <a href="../03_Statistics/nb03_general_stats.ipynb">Rik's stats</a>) that GLM typically is expressed as <strong>Y = XB + e</strong>, where <strong>Y</strong> is a vector containing the data, <strong>X</strong> is the 'design matrix' that defines the model for the data, <strong>B</strong> (or 'Betas') is a vector of parameters to be estimated, and <strong>e</strong> represents random error.</p>
 <p>In the next sections, we will set up our GLM model by specifying the following:</p>
 <ul>
 <li><strong>The data (Y)</strong>, which are our pre-processed functional images. These contain the time series data (length n; 208 in our case) for each voxel.</li>
@@ -7765,10 +7772,6 @@ a.anchor-link {
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Subject''s'</span><span class="p">,</span> <span class="n">sID</span><span class="p">,</span> <span class="s1">'preprocessed functional images:'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">preproc_functional_files</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
-
-<span class="c1"># Get the TR</span>
-<span class="n">TR</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">get_tr</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'TR:'</span><span class="p">,</span> <span class="n">TR</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7792,7 +7795,6 @@ Subjects 15 preprocessed functional images:
 /home/cognestic/COGNESTIC/06_fMRI/FaceRecognition/data/derivatives/fmriprep/sub-15/ses-mri/func/sub-15_ses-mri_task-facerecognition_run-07_space-MNI152NLin6Asym_res-9_desc-preproc_bold.nii.gz
 /home/cognestic/COGNESTIC/06_fMRI/FaceRecognition/data/derivatives/fmriprep/sub-15/ses-mri/func/sub-15_ses-mri_task-facerecognition_run-08_space-MNI152NLin6Asym_res-9_desc-preproc_bold.nii.gz
 /home/cognestic/COGNESTIC/06_fMRI/FaceRecognition/data/derivatives/fmriprep/sub-15/ses-mri/func/sub-15_ses-mri_task-facerecognition_run-09_space-MNI152NLin6Asym_res-9_desc-preproc_bold.nii.gz
-TR: 2.0
 </pre>
 </div>
 </div>
@@ -7854,8 +7856,15 @@ TR: 2.0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The functional images contain time series data for each voxel. The GLM will be fitted, and beta estimates will be computed for each voxel.</p>
-<p>Let's extract the time series of one voxel from the first run to get a sense of how our dependent variable looks.</p>
+<p>The functional images contain <strong>time series data for each voxel</strong> in the brain. When we later run a GLM, we will fit a model to each voxel’s time series and compute beta estimates.</p>
+<p>To get an intuition for what this data looks like, let’s first extract the time series from a single voxel in the first run.</p>
+<p>We’ll use Nilearn’s <code>NiftiSpheresMasker</code> to do this:</p>
+<ul>
+<li>We provide the coordinates of the voxel of interest.</li>
+<li>We specify the TR (repetition time), which is how often the scanner collected a brain volume.</li>
+<li>We standardize the signal (z-score), so that it has mean = 0 and standard deviation = 1.</li>
+</ul>
+<p>The result will be the activity over time in that voxel, showing how its signal changed during the scan.</p>
 </div>
 </div>
 </div>
@@ -7868,15 +7877,18 @@ TR: 2.0
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># voxel of interest</span>
-<span class="n">MNI_coord</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">35</span><span class="p">,</span>	<span class="o">-</span><span class="mi">49</span><span class="p">,</span>	<span class="o">-</span><span class="mi">17</span><span class="p">)]</span> 
+<span class="n">MNI_coord</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">35</span><span class="p">,</span> <span class="o">-</span><span class="mi">49</span><span class="p">,</span> <span class="o">-</span><span class="mi">17</span><span class="p">)]</span> 
+
+<span class="c1"># get the TR</span>
+<span class="n">TR</span> <span class="o">=</span> <span class="n">layout</span><span class="o">.</span><span class="n">get_tr</span><span class="p">()</span>
 
 <span class="c1"># extract the time series </span>
 <span class="n">coord_masker</span> <span class="o">=</span> <span class="n">NiftiSpheresMasker</span><span class="p">(</span>
-    <span class="n">MNI_coord</span><span class="p">,</span> <span class="n">t_r</span><span class="o">=</span><span class="n">TR</span><span class="p">,</span> <span class="n">standardize</span><span class="o">=</span><span class="s1">'zscore'</span>
+  <span class="n">MNI_coord</span><span class="p">,</span> 
+  <span class="n">t_r</span><span class="o">=</span><span class="n">TR</span><span class="p">,</span> 
+  <span class="n">standardize</span><span class="o">=</span><span class="s1">'zscore'</span>
 <span class="p">)</span>
-<span class="n">coord_time_series</span> <span class="o">=</span> <span class="n">coord_masker</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span>
-  <span class="n">preproc_functional_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-  <span class="p">)</span>
+<span class="n">coord_time_series</span> <span class="o">=</span> <span class="n">coord_masker</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">preproc_functional_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="c1"># plot the time series  </span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -7911,7 +7923,7 @@ TR: 2.0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The BOLD signal in this voxel during the 7-minute functional run comes from various sources. We want to determine whether our experimental conditions (viewing Famous, Unfamiliar, or Scrambled faces) contribute to this signal, and if so, by how much. To better estimate this, we aim to regress out other potential contributors that we are not interested in, such as head movement artifacts, scanner drift, and other noise.</p>
+<p>The BOLD signal in this voxel during the 7-minute functional run comes from various sources. We want to determine whether our experimental conditions (viewing Famous, Unfamiliar, or Scrambled faces) contribute to this signal, and if so, by how much. To better estimate this, we aim to regress out other potential contributors that we are not interested in, such as head movement artefacts, scanner drift, and other noise.</p>
 </div>
 </div>
 </div>
@@ -7922,7 +7934,7 @@ TR: 2.0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Predictors-(X):-Events">Predictors (X): Events<a class="anchor-link" href="#Predictors-(X):-Events">¶</a></h3><p>Next, we need to specify the events that occurred during the functional acquisitions. The event files are stored in the <code>data/func</code> folder, and again, we can use <code>PyBIDS</code> to locate them.</p>
+<h3 id="Predictors-(X):-Events">Predictors (X): Events<a class="anchor-link" href="#Predictors-(X):-Events">¶</a></h3><p>We need to specify the events that occurred during the functional acquisitions. The event files are stored in the <code>data/func</code> folder, and again, we can use <code>PyBIDS</code> to locate them.</p>
 </div>
 </div>
 </div>
@@ -8169,9 +8181,9 @@ TR: 2.0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>As described in the course slides, there are 9 trial_types, which come from a 3x3 factorial design which crosses stimulus_type (<strong>Famous Face</strong>, <code>FF</code>; <strong>Unfamiliar Face</strong>, <code>UF</code>; <strong>Scrambled Face</strong>, <code>SF</code>) with presentation (<strong>Initial</strong>, <code>Ini</code>; <strong>Immediate Repeat</strong>, <code>Imm</code>; <strong>Delayed Repeat</strong>, <code>Del</code>).</p>
+<p>There are 9 trial_types, which come from a 3x3 factorial design which crosses <em><strong>stimulus type</strong></em> (<strong>Famous Face</strong>, <code>FF</code>; <strong>Unfamiliar Face</strong>, <code>UF</code>; <strong>Scrambled Face</strong>, <code>SF</code>) with <em><strong>presentation</strong></em> (<strong>Initial</strong>, <code>Ini</code>; <strong>Immediate Repeat</strong>, <code>Imm</code>; <strong>Delayed Repeat</strong>, <code>Del</code>).</p>
 <p>In the GLM's design matrix, we include one regressor (the same length as the time series data points) for each condition. The regressor represents the predicted BOLD response to the stimulus. The BOLD signal does not simply switch from 0 to 1 (on or off); instead, it follows a specific shape known as the <strong>haemodynamic response function (HRF)</strong>. The HRF models the delayed and dispersed nature of the BOLD signal in response to neural activity, typically peaking a few seconds after the stimulus and then gradually returning to baseline.</p>
-<p>To obtain our condition's predicted BOLD response, we convolve the onset and duration times of the condition with an HRF. Several HRF models have been derived from research, with two of the most commonly used in typical populations being Glover's HRF and SPM's HRF.</p>
+<p>To obtain our condition's predicted BOLD response, <strong>we convolve the onset and duration times of the condition with an HRF</strong>. Several HRF models have been derived from research, with two of the most commonly used in typical populations being Glover's HRF and SPM's HRF.</p>
 <p>To see how it works, let's create a regressor for the <strong>IniFF</strong> condition. We'll use the condition's onset and duration times from the event file and convolve them with Glover's HRF. Nilearn has a built-in function for this (<a href="https://nilearn.github.io/stable/modules/generated/nilearn.glm.first_level.compute_regressor.html">glm.first_level.compute_regressor</a>), so we will use that.</p>
 </div>
 </div>
@@ -8246,7 +8258,7 @@ TR: 2.0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>In Nilearn, we don’t need to manually create these regressors when setting up the first-level model; we only need to provide the event files and ensure they contain the '<em>onset</em>', '<em>duration</em>', and '<em>trial_type</em>' columns.</p>
+<p>💡 <strong>Note:</strong> We created the regressor by hand above just to show what’s happening under the hood. In practice, you don’t need to manually build these regressors in Nilearn. When setting up the first-level model, you simply provide the event files, making sure they contain the <em>onset</em>, <em>duration</em>, and <em>trial_type</em> columns, and Nilearn will generate the regressors for you.</p>
 </div>
 </div>
 </div>
@@ -8268,9 +8280,9 @@ TR: 2.0
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Confounds represent fluctuations with a potential non-neuronal origin, such as head motion artifacts, scanner noise, and cardiac or respiratory effects. We can include them in the GLM as regressors of no interest to minimize the confounding effects of non-neuronal signals. fMRIPrep calculates a wide range of possible confounds. You can find detailed information in the <a href="https://fmriprep.org/en/stable/outputs.html#confounds">fMRIPrep documentation</a>.</p>
+<p>Confounds represent fluctuations with a potential non-neuronal origin, such as head motion artefacts, scanner noise, and cardiac or respiratory effects. We can include them in the GLM as regressors of no interest to minimize the confounding effects of non-neuronal signals. fMRIPrep calculates a wide range of possible confounds. You can find detailed information in the <a href="https://fmriprep.org/en/stable/outputs.html#confounds">fMRIPrep documentation</a>.</p>
 <p>Which confounding variables you include in the GLM depends on the analysis you want to perform. The most well-established confounds are the six head-motion parameters (three rotations and three translations). If your dataset includes physiological recordings (e.g., heart rate, respiration), you might consider including these as confounds. If not, you might include PCA components from CompCor, a method implemented in fMRIPrep that identifies noise components from CSF and white matter signals. <strong>However, please read the fMRIPrep documentation on confounds carefully before including any additional confounds, and never include all confounds in the GLM design matrix!</strong></p>
-<p>If your study has specific considerations (e.g., participant behavior or task-related noise), you may need to include additional custom confounds.</p>
+<p>If your study has specific considerations (e.g., participant behaviour or task-related noise), you may need to include additional custom confounds.</p>
 <p>The confounds computed by <code>fMRIPrep</code> can be found in the <code>data/derivatives/fmriprep/{sub}/func/</code> directory. They are stored separately for each run in <code>.tsv</code> files, with one column for each confound variable. Let's use <code>PyBIDS</code> to locate these files.</p>
 </div>
 </div>
@@ -8688,7 +8700,6 @@ Number of data points for ech confound: 208
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>In this example, we will include only the most commonly used confounds—the <strong>six motion parameters</strong>.</p>
-<p><strong>! Important</strong>: If your data contains dummy scans and you specified this when running fMRIPrep, dummy scan confounds (non_steady_state_outlier##) will also be generated, and you must include them in your GLM! This ensures that the dummy volumes do not contribute to the parameter estimates.</p>
 </div>
 </div>
 </div>
@@ -8895,10 +8906,7 @@ Number of data points for ech confound: 208
 <span class="c1"># coord_masker = NiftiSpheresMasker(</span>
 <span class="c1">#     MNI_coord, t_r=TR, standardize='zscore'</span>
 <span class="c1"># )</span>
-
-<span class="c1"># coord_time_series = coord_masker.fit_transform(</span>
-<span class="c1">#   preproc_functional_files[0]</span>
-<span class="c1">#   )</span>
+<span class="c1"># coord_time_series = coord_masker.fit_transform(preproc_functional_files[0])</span>
 
 <span class="c1"># Now we will extract the time series with the confounds of interest regressed out</span>
 <span class="n">coord_time_series_no_confounds</span> <span class="o">=</span> <span class="n">coord_masker</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span>
@@ -8982,8 +8990,8 @@ Number of data points for ech confound: 208
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Performing-the-GLM-analysis">Performing the GLM analysis<a class="anchor-link" href="#Performing-the-GLM-analysis">¶</a></h2><p>Now we have the BOLD images, event files, and confounds for each of the 9 functional runs. Nilearn will analyse them together and <strong>compute fixed-effects statistics for this subject</strong>.</p>
-<p>Next, we will create and estimate a <code>FirstLevelModel</code> object, which <strong>will generate our design matrix based on the inputs we have provided</strong>.</p>
+<h2 id="Performing-the-GLM-analysis">Performing the GLM analysis<a class="anchor-link" href="#Performing-the-GLM-analysis">¶</a></h2><p>We now have everything we need for this subject: the BOLD images, event files, and confound regressors for each of the 9 functional runs. Nilearn can use these together to <strong>fit a first-level GLM</strong> and compute fixed-effects statistics (i.e., effects averaged across runs within this subject).</p>
+<p>To do this, we will create a <code>FirstLevelModel</code> object. Based on the inputs we provide (BOLD images, event files, TR, confounds, etc.), it will automatically build the design matrix and estimate the model for us.</p>
 </div>
 </div>
 </div>
@@ -9276,25 +9284,25 @@ Number of data points for ech confound: 208
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>/tmp/ipykernel_2958/205460931.py:2: UserWarning: [NiftiMasker.fit] Generation of a mask has been requested (imgs != None) while a mask was given at masker creation. Given mask will be used.
+<pre>/tmp/ipykernel_15245/205460931.py:2: UserWarning: [NiftiMasker.fit] Generation of a mask has been requested (imgs != None) while a mask was given at masker creation. Given mask will be used.
   first_level_model = first_level_model.fit(
-/tmp/ipykernel_2958/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, response_time, circle_duration, stim_file
+/tmp/ipykernel_15245/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, circle_duration, response_time, stim_file
   first_level_model = first_level_model.fit(
-/tmp/ipykernel_2958/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, response_time, circle_duration, stim_file
+/tmp/ipykernel_15245/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, circle_duration, response_time, stim_file
   first_level_model = first_level_model.fit(
-/tmp/ipykernel_2958/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, response_time, circle_duration, stim_file
+/tmp/ipykernel_15245/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, circle_duration, response_time, stim_file
   first_level_model = first_level_model.fit(
-/tmp/ipykernel_2958/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, response_time, circle_duration, stim_file
+/tmp/ipykernel_15245/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, circle_duration, response_time, stim_file
   first_level_model = first_level_model.fit(
-/tmp/ipykernel_2958/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, response_time, circle_duration, stim_file
+/tmp/ipykernel_15245/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, circle_duration, response_time, stim_file
   first_level_model = first_level_model.fit(
-/tmp/ipykernel_2958/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, response_time, circle_duration, stim_file
+/tmp/ipykernel_15245/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, circle_duration, response_time, stim_file
   first_level_model = first_level_model.fit(
-/tmp/ipykernel_2958/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, response_time, circle_duration, stim_file
+/tmp/ipykernel_15245/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, circle_duration, response_time, stim_file
   first_level_model = first_level_model.fit(
-/tmp/ipykernel_2958/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, response_time, circle_duration, stim_file
+/tmp/ipykernel_15245/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, circle_duration, response_time, stim_file
   first_level_model = first_level_model.fit(
-/tmp/ipykernel_2958/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, response_time, circle_duration, stim_file
+/tmp/ipykernel_15245/205460931.py:2: UserWarning: The following unexpected columns in events data will be ignored: trigger, button_pushed, circle_duration, response_time, stim_file
   first_level_model = first_level_model.fit(
 </pre>
 </div>
@@ -9914,7 +9922,7 @@ Number of data points for ech confound: 208
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>&lt;matplotlib.legend.Legend at 0x7dffaf6b3150&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x78532a7a6c90&gt;</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
@@ -10134,7 +10142,7 @@ Number of data points for ech confound: 208
 <p>As mentioned earlier, a GLM contrast is a linear combination of predictor beta coefficients (parameter estimates), where each beta represents the weight or contribution of a given predictor to the overall model.</p>
 <p>For example, if we have conditions (predictors): Famous, Unfamiliar, and Scrambled, a contrast estimating Faces vs. Scrambled with weights <code>[1, 1, -2]</code> would calculate Famous + Unfamiliar - 2 * Scrambled. This can be interpreted as the sum of the responses to Famous and Unfamiliar faces, minus twice the response to Scrambled faces. However, what we typically want is the average response to Famous and Unfamiliar faces minus the response to Scrambled faces. To achieve this, we would need to scale the contrast as follows: <code>[0.5, 0.5, -1]</code>.</p>
 <p>Scaling contrast weights affects the magnitude of the resulting contrast estimate, but not the t-values or p-values, so the statistical inference remains unchanged. However, contrast estimates that reflect averages rather than sums are generally more meaningful for interpretation.</p>
-<p>Note that, if different runs contain different numbers of trials of each condition, you could also scale the contrast weight for each run by the proportion of the total number of trials (of a given condition) that are in each run - i.e, give more weight to estimates from runs that contain more trials of each type, since these estimates will be more reliable. (In fact, this would give you an estimate of the average over runs identical to that if you concatenated all runs - see <a href="../03_Statistics/nb03_general_stats.ipynb">Rik's Stats tutorial</a> for more information).</p>
+<p>Finally, note that if different runs contain different numbers of trials per condition, you can also weight the contrast by the relative number of trials in each run. This way, runs with more data contribute more strongly, producing an estimate equivalent to what you’d get if all runs were concatenated (see <a href="../03_Statistics/nb03_general_stats.ipynb">Rik's Stats tutorial</a> for more information).</p>
 </div>
 </div>
 </div>
@@ -10174,7 +10182,7 @@ Number of data points for ech confound: 208
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">example_contrast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="c1"># Initial &gt; Repeats</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1"> Original contrast:</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="n">example_contrast</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1"> Scaled contrast for one run:</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="n">scale_contrast</span><span class="p">(</span><span class="n">example_contrast</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1"> Scaled contrast for nine runs:</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="n">scale_contrast</span><span class="p">(</span><span class="n">example_contrast</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">example_contrast</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1"> Scaled contrast for nine runs:</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="n">scale_contrast</span><span class="p">(</span><span class="n">example_contrast</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -10210,7 +10218,8 @@ Number of data points for ech confound: 208
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="The-final-contrasts-for-our-model">The final contrasts for our model<a class="anchor-link" href="#The-final-contrasts-for-our-model">¶</a></h3><p>In our model, we have 9 runs. If we have the same number of regressors, in the same order, in each run, we can specify the contrast for one run, and Nilearn will automatically reuse it for the other runs. However, to be cautious, it's advisable to define contrasts for each run separately.</p>
+<h3 id="The-final-contrasts-for-our-model">The final contrasts for our model<a class="anchor-link" href="#The-final-contrasts-for-our-model">¶</a></h3><p>In our model, we have 9 runs. If each run has the same set of regressors in the same order, then we only need to specify a contrast once and Nilearn will automatically apply it across all runs.</p>
+<p>However, to be safe (and to avoid unexpected errors if the design matrices differ even slightly), it is good practice to <strong>explicitly define the contrast for each run</strong>. This ensures that each contrast is matched correctly to the regressors in that run.</p>
 </div>
 </div>
 </div>
@@ -10289,8 +10298,8 @@ Number of data points for ech confound: 208
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create contrasts for all unique conditions</span>
 <span class="n">events_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">event_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">unique_conditions</span> <span class="o">=</span> <span class="n">events_df</span><span class="p">[</span><span class="s1">'trial_type'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-<span class="c1"># sort the conditions</span>
-<span class="n">unique_conditions</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span> <span class="c1"># don't neccessarily need to sort them</span>
+<span class="c1"># sort the conditions (don't neccessarily need to sort them)</span>
+<span class="n">unique_conditions</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span> 
 
 <span class="n">basic_contrast_list</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># we will append these to the condition-comparing contrasts created above</span>
 
@@ -10461,9 +10470,9 @@ Number of data points for ech confound: 208
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Computing-contrasts-and-plotting-result-maps">Computing contrasts and plotting result maps<a class="anchor-link" href="#Computing-contrasts-and-plotting-result-maps">¶</a></h2><p>With Nilearn, you can compute the <code>effect size</code> maps, <code>t-statistics</code> maps, <code>z-scores</code> and some other types. See the <a href="https://nilearn.github.io/dev/modules/generated/nilearn.glm.Contrast.html">documentation</a> for more information.</p>
-<p>'Effect size' maps correspond to the 'beta' (or contrast estimate) maps. These can be used, for example, to plot effect sizes (beta estimates) in ROI analysis (see examples in the <a href="nb06_ROI_analysis.ipynb">ROI analysis notebook</a>), or as inputs for <a href="nb05_Group-Level-Analysis.ipynb">group-level analysis</a>.</p>
-<p>In the case of a single-subject analysis, let's look at z-scored maps for <strong>Faces &gt; Scrambled contrast</strong>.</p>
+<h2 id="Computing-contrasts-and-plotting-result-maps">Computing contrasts and plotting result maps<a class="anchor-link" href="#Computing-contrasts-and-plotting-result-maps">¶</a></h2><p>With Nilearn, you can compute several different statistical maps from a contrast, including effect size maps, t-statistic maps, z-score maps, and more (see the <a href="https://nilearn.github.io/dev/modules/generated/nilearn.glm.Contrast.html">documentation</a> for details).</p>
+<p><strong>Effect size maps</strong> correspond to the beta (or contrast estimate) maps. These represent the estimated size of the effect for a given condition or contrast. They are useful, for example, when plotting condition-specific betas in ROI analyses (see examples in the <a href="nb06_ROI_analysis.ipynb">ROI analysis notebook</a>), or as inputs for <a href="nb05_Group-Level-Analysis.ipynb">group-level analysis</a>.</p>
+<p>For our single-subject analysis, we will now look at a <strong>z-scored statistical map</strong> for the <strong>Faces &gt; Scrambled</strong> contrast. Z-scores tell us how strong the effect is relative to the noise level.</p>
 </div>
 </div>
 </div>
@@ -11520,10 +11529,10 @@ x4CCE8vMn5GjFIa1mARjlwAAAA==
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Processing-multiple-subjects-in-parallel">Processing multiple subjects in parallel<a class="anchor-link" href="#Processing-multiple-subjects-in-parallel">¶</a></h3><h4 id="Using-SLURM"><strong>Using <code>SLURM</code></strong><a class="anchor-link" href="#Using-SLURM">¶</a></h4><p>If <code>SLURM </code>is available on the system, you can create a project-specific script where you define the paths and use the <code>sbatch</code> command to execute the generic script for each subject in parallel.</p>
-<p><strong>Example script</strong>: <a href="code-examples/step06_first_level_analysis.sh">step06_first_level_analysis.sh</a></p>
+<h3 id="Processing-multiple-subjects-in-parallel">Processing multiple subjects in parallel<a class="anchor-link" href="#Processing-multiple-subjects-in-parallel">¶</a></h3><h4 id="Using-SLURM">Using <code>SLURM</code><a class="anchor-link" href="#Using-SLURM">¶</a></h4><p>If <code>SLURM </code>is available on the system, you can create a project-specific script where you define the paths and use the <code>sbatch</code> command to execute the generic script for each subject in parallel.</p>
+<p><strong>Example script</strong>: <a href="code-examples/step07_first_level_analysis.sh">step07_first_level_analysis.sh</a></p>
 <p>If <code>SLURM</code> is not available, you can still process multiple subjects in parallel using alternative methods depending on the system you're working with.</p>
-<h4 id="Using-Python's-multiprocessing-Module"><strong>Using Python's <code>multiprocessing</code> Module</strong><a class="anchor-link" href="#Using-Python's-multiprocessing-Module">¶</a></h4><p>Python's <code>multiprocessing</code> module allows you to run processes in parallel on your local machine, distributing the workload across multiple CPU cores. An advantage is that it can be run on a single machine without needing a cluster or SLURM. A disatvantage is that it is limited by the local resources (RAM, CPU), and not ideal for very large datasets or many subjects.
+<h4 id="Using-Python's-multiprocessing-Module">Using Python's <code>multiprocessing</code> Module<a class="anchor-link" href="#Using-Python's-multiprocessing-Module">¶</a></h4><p>Python's <code>multiprocessing</code> module allows you to run processes in parallel on your local machine, distributing the workload across multiple CPU cores. An advantage is that it can be run on a single machine without needing a cluster or SLURM. A disatvantage is that it is limited by the local resources (RAM, CPU), and not ideal for very large datasets or many subjects.
 Here is an example how you could use the <code>multiprocessing</code> module:</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -11552,7 +11561,7 @@ Here is an example how you could use the <code>multiprocessing</code> module:</p
     <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 </pre></div>
-<h4 id="Using-Cloud-Services"><strong>Using Cloud Services</strong><a class="anchor-link" href="#Using-Cloud-Services">¶</a></h4><p>If you don’t have SLURM or a powerful local machine, cloud computing platforms (e.g., AWS, Google Cloud, Microsoft Azure) allow you to run parallel processes with scalable resources. You can set up virtual machines or use a service like AWS Batch or Google Cloud Dataflow to handle parallel jobs across multiple subjects. However, it requires cloud expertise and comes with costs.</p>
+<h4 id="Using-Cloud-Services">Using Cloud Services<a class="anchor-link" href="#Using-Cloud-Services">¶</a></h4><p>If you don’t have SLURM or a powerful local machine, cloud computing platforms (e.g., AWS, Google Cloud, Microsoft Azure) allow you to run parallel processes with scalable resources. You can set up virtual machines or use a service like AWS Batch or Google Cloud Dataflow to handle parallel jobs across multiple subjects. However, it requires cloud expertise and comes with costs.</p>
 </div>
 </div>
 </div>

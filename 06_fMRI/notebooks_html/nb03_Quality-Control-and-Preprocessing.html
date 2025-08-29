@@ -7517,6 +7517,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><strong>COGNESTIC-2025</strong></p>
 <ul>
 <li><strong>Author:</strong> <a href="https://www.mrc-cbu.cam.ac.uk/people/dace.apsvalka/">Dace Apšvalka</a></li>
 <li><strong>Date:</strong> August 2025</li>
@@ -7532,8 +7533,8 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="fMRI-Data-Quality-Control-and-Pre-processing">fMRI Data Quality Control and Pre-processing<a class="anchor-link" href="#fMRI-Data-Quality-Control-and-Pre-processing">¶</a></h1><p>In fMRI research, ensuring high-quality data and performing robust pre-processing are crucial steps in obtaining reliable results. Poor quality data or incorrect preprocessing can introduce artifacts, reduce sensitivity, and lead to inaccurate conclusions. Fortunately, the neuroimaging community has developed powerful tools to streamline these tasks, notably through the use of <a href="https://bids-apps.neuroimaging.io/">BIDS-Apps</a>.</p>
-<p>In this tutorial, we will focus on two BIDS-Apps for fMRI data: <a href="https://mriqc.readthedocs.io/en/latest/">MRIQC</a> and <a href="https://fmriprep.org/en/stable/">fMRIPrep</a>.</p>
+<h1 id="fMRI-Data-Quality-Control-and-Pre-processing">fMRI Data Quality Control and Pre-processing<a class="anchor-link" href="#fMRI-Data-Quality-Control-and-Pre-processing">¶</a></h1><p>In fMRI research, ensuring high-quality data and performing robust pre-processing are crucial steps in obtaining reliable results. Poor quality data or incorrect preprocessing can introduce artifacts, reduce sensitivity, and lead to inaccurate conclusions. Fortunately, the neuroimaging community has developed powerful tools to streamline these tasks, notably through the use of <a href="https://bids.neuroimaging.io/tools/bids-apps.html">BIDS Apps</a>.</p>
+<p>In this tutorial, we will focus on two BIDS Apps for fMRI data: <a href="https://mriqc.readthedocs.io/en/latest/">MRIQC</a> and <a href="https://fmriprep.org/en/stable/">fMRIPrep</a>.</p>
 <ul>
 <li><p><strong>MRIQC</strong> generates quality control metrics and visual reports for both anatomical and functional MRI data, helping you assess the quality of your dataset before proceeding with analysis.</p>
 </li>
@@ -7640,9 +7641,9 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="Quality-control-with-MRIQC">Quality control with MRIQC<a class="anchor-link" href="#Quality-control-with-MRIQC">¶</a></h2><p>Before we begin any processing with our fMRI data, it’s crucial to assess the quality of the acquisition.</p>
-<p><strong>MRIQC</strong> extracts a variety of <a href="(https://mriqc.readthedocs.io/en/latest/measures.html">Image Quality Metrics (IQMs)</a>) from both structural and functional MRI data. These metrics can help you identify problematic scans (e.g., with motion artefacts or low signal quality) and exclude or flag data before running expensive processing pipelines.</p>
+<p><strong>MRIQC</strong> extracts a variety of <a href="https://mriqc.readthedocs.io/en/latest/measures.html">Image Quality Metrics (IQMs)</a> from both structural and functional MRI data. These metrics can help you identify problematic scans (e.g., with motion artefacts or low signal quality) and exclude or flag data before running expensive processing pipelines.</p>
 <p>For detailed information, you can refer to the <a href="https://mriqc.readthedocs.io/en/latest/">MRIQC Documentation</a>.</p>
-<p>MRIQC is a <a href="https://bids-apps.neuroimaging.io/">BIDS-App</a>, meaning it is designed to work seamlessly with datasets that follow the BIDS format. Its command-line interface follows the BIDS-Apps standard:</p>
+<p>MRIQC is a <a href="https://bids.neuroimaging.io/tools/bids-apps.html">BIDS App</a>, meaning it is designed to work seamlessly with datasets that follow the BIDS format. Its command-line interface follows the BIDS Apps standard:</p>
 <p><code>mriqc bids-root/ output-folder/ participant</code></p>
 <p>The most effective way to <strong>run MRIQC is through containerised versions</strong>, such as Docker or Singularity/Apptainer. Containers encapsulate the software and all its dependencies, including a minimal operating system, into a single, self-contained image. This approach ensures that the software runs seamlessly across different computing environments, enhancing shareability, portability, and, importantly, reproducibility.</p>
 </div>
@@ -7733,7 +7734,7 @@ apptainer<span class="w"> </span>run<span class="w"> </span><span class="se">\</
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span>%%bash<span class="w"> </span>
@@ -12786,7 +12787,7 @@ YII=
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Preprocessing-with-fMRIPrep">Preprocessing with fMRIPrep<a class="anchor-link" href="#Preprocessing-with-fMRIPrep">¶</a></h2><p>fMRIPrep – <a href="https://fmriprep.org/en/stable/">A Robust Preprocessing Pipeline for fMRI Data</a> – is another <a href="https://bids-apps.neuroimaging.io/">BIDS-App</a>.</p>
+<h2 id="Preprocessing-with-fMRIPrep">Preprocessing with fMRIPrep<a class="anchor-link" href="#Preprocessing-with-fMRIPrep">¶</a></h2><p>fMRIPrep – <a href="https://fmriprep.org/en/stable/">A Robust Preprocessing Pipeline for fMRI Data</a> – is another <a href="https://bids.neuroimaging.io/tools/bids-apps.html">BIDS App</a>.</p>
 <p>fMRIPrep is an fMRI data preprocessing pipeline designed to provide an easily accessible, state-of-the-art interface that is robust to variations in scan acquisition protocols and requires <strong>minimal user input</strong>, while delivering easily interpretable and comprehensive error and output reporting.</p>
 <p>The fMRIPrep pipeline combines tools from well-established software packages, including FSL, ANTs, FreeSurfer, and AFNI. It was designed to <strong>use the best software implementation for each stage of preprocessing</strong>.</p>
 <p>fMRIPrep adapts its pipeline based on the data and metadata provided as input. For example, slice timing correction will be performed only if the <em>SliceTiming</em> metadata field is present in the input dataset.</p>
@@ -12937,7 +12938,7 @@ to workflows in <em>fMRIPrep</em>'s documentation</a>.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Example-scipt-to-run-fMRIPrep">Example scipt to run fMRIPrep<a class="anchor-link" href="#Example-scipt-to-run-fMRIPrep">¶</a></h3><p>For the Freesurfer parts of fMRIPrep, you need to get a license file (which is free) from here: <a href="https://surfer.nmr.mgh.harvard.edu/registration.html">Freesurfer license file</a> (even if you do turn off the <code>recon-all</code> option below). The code below assumes that you have renamed this file to "freesurfer_license.txt" and put in the FaceRecognition directory.</p>
+<h3 id="Example-script-to-run-fMRIPrep">Example script to run fMRIPrep<a class="anchor-link" href="#Example-script-to-run-fMRIPrep">¶</a></h3><p>For the Freesurfer parts of fMRIPrep, you need to get a license file (which is free) from here: <a href="https://surfer.nmr.mgh.harvard.edu/registration.html">Freesurfer license file</a> (even if you do turn off the <code>recon-all</code> option below). The code below assumes that you have renamed this file to "freesurfer_license.txt" and put in the FaceRecognition directory.</p>
 <p>About <code>--output-spaces</code> see information here: <a href="https://fmriprep.org/en/22.0.1/spaces.html">https://fmriprep.org/en/22.0.1/spaces.html</a>.<br/>
 And here is some useful background information about the many possible MNI spaces: <a href="https://www.lead-dbs.org/about-the-mni-spaces/">https://www.lead-dbs.org/about-the-mni-spaces/</a></p>
 <p>See the list of all possible options <a href="https://fmriprep.org/en/stable/usage.html#execution-and-the-bids-format">https://fmriprep.org/en/stable/usage.html#execution-and-the-bids-format</a>.</p>
@@ -12985,7 +12986,7 @@ apptainer<span class="w"> </span>run<span class="w"> </span><span class="se">\</
 <h2 id="Pre-processing-with-NiPype">Pre-processing with NiPype<a class="anchor-link" href="#Pre-processing-with-NiPype">¶</a></h2><p><a href="https://nipype.readthedocs.io/en/latest/">Nipype</a> is a Python-based framework that facilitates the creation of flexible, reproducible, and scalable neuroimaging workflows. It provides interfaces to a variety of neuroimaging tools and packages, such as <code>FSL</code>, <code>SPM</code>, <code>FreeSurfer</code>, and <code>ANTs</code>, allowing users to integrate different software into a single processing pipeline. <code>Nipype</code> enables seamless automation of data analysis, enhancing reproducibility and reducing the manual effort required in complex neuroimaging workflows.</p>
 <p><code>fMRIPrep</code> is built using <code>Nipype</code>, which means that <code>fMRIPrep</code> takes advantage of <code>Nipype</code>’s ability to integrate multiple software tools into a single workflow.</p>
 <p>Here, we will demonstrate a brief example of how to use <code>NiPype</code> to pre-process your fMRI data. In this example, we will only interface with <code>FSL</code>, as it is the tool available on our system.</p>
-<p>We will perform <strong>motion correction</strong> (realignment of volumes) and <strong>slice-time correction</strong> on the functional images and then <strong>compare the median temporal signal-to-noise ratio</strong> (TSNR) between the raw and pre-processed data. TSNR is a commonly used metric in fMRI analysis that quantifies the quality of the time series data at each voxel. A higher TSNR means better data quality.</p>
+<p>We will perform <strong>motion correction</strong> (realignment of volumes) and <strong>slice-time correction</strong> on the functional image of the first run and then <strong>compare the median temporal signal-to-noise ratio</strong> (TSNR) between the raw and pre-processed data. TSNR is a commonly used metric in fMRI analysis that quantifies the quality of the time series data at each voxel. A higher TSNR means better data quality.</p>
 </div>
 </div>
 </div>
@@ -12994,7 +12995,7 @@ apptainer<span class="w"> </span>run<span class="w"> </span><span class="se">\</
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Create the TSNR function</span>
@@ -13041,7 +13042,9 @@ apptainer<span class="w"> </span>run<span class="w"> </span><span class="se">\</
 <div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">nipype.pipeline.engine</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pe</span> 
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Import necessary libraries and define project paths</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">nipype.pipeline.engine</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pe</span> 
 <span class="kn">import</span><span class="w"> </span><span class="nn">nipype.interfaces.fsl</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">fsl</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">bids.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">BIDSLayout</span>
@@ -13063,15 +13066,12 @@ apptainer<span class="w"> </span>run<span class="w"> </span><span class="se">\</
 <div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Get subject's T1w image and all Bold images</span>
-<span class="n">t1w</span> <span class="o">=</span> <span class="n">bids_layout</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s1">'15'</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="s1">'anat'</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">'T1w'</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">'nii.gz'</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">'filename'</span><span class="p">)</span>  
-<span class="n">t1w</span> <span class="o">=</span> <span class="n">t1w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">bold</span> <span class="o">=</span> <span class="n">bids_layout</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s1">'15'</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="s1">'func'</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">'nii.gz'</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">'filename'</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Get subject's T1w image and Bold image of the first run</span>
 
-<span class="c1"># run 1 bold</span>
-<span class="n">bold_run1</span> <span class="o">=</span> <span class="n">bold</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">t1w</span> <span class="o">=</span> <span class="n">bids_layout</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s1">'15'</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="s1">'anat'</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">'T1w'</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">'nii.gz'</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">'filename'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  
+<span class="n">bold_run1</span> <span class="o">=</span> <span class="n">bids_layout</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s1">'15'</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="s1">'func'</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s1">'nii.gz'</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">'filename'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="n">bold_run1</span><span class="p">)</span>
-
 <span class="nb">print</span><span class="p">(</span><span class="n">t1w</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -13295,7 +13295,7 @@ Slice timings have been saved to FaceRecognition/scratch/slice_timing.txt
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>250804-00:21:25,174 nipype.workflow INFO:
+<pre>250829-02:40:10,700 nipype.workflow INFO:
 	 Generated workflow graph: FaceRecognition/scratch/preprocessing/graph.png (graph2use=colored, simple_form=True).
 </pre>
 </div>
@@ -13331,7 +13331,7 @@ Slice timings have been saved to FaceRecognition/scratch/slice_timing.txt
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>250804-00:21:25,442 nipype.workflow INFO:
+<pre>250829-02:40:10,961 nipype.workflow INFO:
 	 Generated workflow graph: /home/cognestic/COGNESTIC/06_fMRI/FaceRecognition/scratch/preprocessing/graph.png (graph2use=flat, simple_form=True).
 </pre>
 </div>
@@ -13366,43 +13366,43 @@ Slice timings have been saved to FaceRecognition/scratch/slice_timing.txt
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>250804-00:21:25,570 nipype.workflow INFO:
+<pre>250829-02:40:11,60 nipype.workflow INFO:
 	 Workflow preprocessing settings: ['check', 'execution', 'logging', 'monitoring']
-250804-00:21:25,620 nipype.workflow INFO:
+250829-02:40:11,80 nipype.workflow INFO:
 	 Running serially.
-250804-00:21:25,621 nipype.workflow INFO:
+250829-02:40:11,80 nipype.workflow INFO:
 	 [Node] Setting-up "preprocessing.realign" in "/home/cognestic/COGNESTIC/06_fMRI/FaceRecognition/scratch/preprocessing/realign".
-250804-00:21:25,627 nipype.workflow INFO:
+250829-02:40:11,83 nipype.workflow INFO:
 	 [Node] Executing "realign" &lt;nipype.interfaces.fsl.preprocess.MCFLIRT&gt;
-250804-00:22:30,445 nipype.workflow INFO:
-	 [Node] Finished "realign", elapsed time 64.816111s.
-250804-00:22:30,449 nipype.workflow INFO:
+250829-02:41:14,157 nipype.workflow INFO:
+	 [Node] Finished "realign", elapsed time 63.072525s.
+250829-02:41:14,161 nipype.workflow INFO:
 	 [Node] Setting-up "preprocessing.slicetime" in "/home/cognestic/COGNESTIC/06_fMRI/FaceRecognition/scratch/preprocessing/slicetime".
-250804-00:22:30,452 nipype.workflow INFO:
+250829-02:41:14,164 nipype.workflow INFO:
 	 [Node] Executing "slicetime" &lt;nipype.interfaces.fsl.preprocess.SliceTimer&gt;
-250804-00:22:31,181 nipype.interface INFO:
-	 stderr 2025-08-04T00:22:31.181215:Could not open matrix file FaceRecognition/scratch/slice_timing.txt
-250804-00:22:53,599 nipype.workflow INFO:
-	 [Node] Finished "slicetime", elapsed time 23.143828s.
-250804-00:22:53,605 nipype.workflow INFO:
+250829-02:41:14,932 nipype.interface INFO:
+	 stderr 2025-08-29T02:41:14.932122:Could not open matrix file FaceRecognition/scratch/slice_timing.txt
+250829-02:41:36,541 nipype.workflow INFO:
+	 [Node] Finished "slicetime", elapsed time 22.376404s.
+250829-02:41:36,548 nipype.workflow INFO:
 	 [Node] Setting-up "_plot_motion0" in "/home/cognestic/COGNESTIC/06_fMRI/FaceRecognition/scratch/preprocessing/_plot_type_rotations/plot_motion/mapflow/_plot_motion0".
-250804-00:22:53,608 nipype.workflow INFO:
+250829-02:41:36,551 nipype.workflow INFO:
 	 [Node] Executing "_plot_motion0" &lt;nipype.interfaces.fsl.utils.PlotMotionParams&gt;
-250804-00:22:54,67 nipype.workflow INFO:
-	 [Node] Finished "_plot_motion0", elapsed time 0.457059s.
-250804-00:22:54,76 nipype.workflow INFO:
+250829-02:41:36,924 nipype.workflow INFO:
+	 [Node] Finished "_plot_motion0", elapsed time 0.370609s.
+250829-02:41:36,930 nipype.workflow INFO:
 	 [Node] Setting-up "_plot_motion0" in "/home/cognestic/COGNESTIC/06_fMRI/FaceRecognition/scratch/preprocessing/_plot_type_translations/plot_motion/mapflow/_plot_motion0".
-250804-00:22:54,78 nipype.workflow INFO:
+250829-02:41:36,932 nipype.workflow INFO:
 	 [Node] Executing "_plot_motion0" &lt;nipype.interfaces.fsl.utils.PlotMotionParams&gt;
-250804-00:22:54,198 nipype.workflow INFO:
-	 [Node] Finished "_plot_motion0", elapsed time 0.11827s.
+250829-02:41:37,38 nipype.workflow INFO:
+	 [Node] Finished "_plot_motion0", elapsed time 0.104053s.
 </pre>
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>&lt;networkx.classes.digraph.DiGraph at 0x78c5244ee150&gt;</pre>
+<pre>&lt;networkx.classes.digraph.DiGraph at 0x73c85c1b3f90&gt;</pre>
 </div>
 </div>
 </div>
@@ -13460,7 +13460,7 @@ Slice timings have been saved to FaceRecognition/scratch/slice_timing.txt
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">realigned_image</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">project_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s1">'scratch'</span> <span class="o">/</span> <span class="s1">'preprocessing'</span> <span class="o">/</span> <span class="s1">'realign'</span> <span class="o">/</span> <span class="s1">'sub-15_ses-mri_task-facerecognition_run-01_bold_mcf.nii.gz'</span>
@@ -13489,20 +13489,6 @@ Slice timings have been saved to FaceRecognition/scratch/slice_timing.txt
 TSNR for realigned image: 5.838
 TSNR for slice-time corrected image: 5.838
 </pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=517a7d0f-d1e5-49cd-8acf-024fb501443a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span> 
-</pre></div>
 </div>
 </div>
 </div>
