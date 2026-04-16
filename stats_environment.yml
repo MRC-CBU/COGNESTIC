@@ -4,18 +4,23 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - python=3.12
+  - pip
   - ipykernel=6.29.3
-  - pip=24.2
-  - pymer4=0.8.2
-  - python=3.11
-  - r-matrix=1.6.3
+  - pymer4=0.9.2
+  - r-matrix=1.7.4
+  - r-lmertest=3.2_1
+  - r-lme4=1.1_38
+  - r-emmeans=1.11.2_8
+  - r-reformulas=0.4.4
+  - rpy2=3.6.6
   - pip:
-      - ipython==8.22.1
-      - jupyter==1.0.0
-      - matplotlib==3.8.3
-      - numpy==1.26.4
-      - pandas==2.2.2
-      - scipy==1.14.0
+      - ipython==9.12.0
+      - jupyter==1.1.1
+      - matplotlib==3.10.8
+      - numpy==2.3.5
+      - pandas==3.0.2
+      - scipy==1.15.3
 
 # After installation, to ensure the ipykernel is properly installed and set up:
 # conda activate stats 
