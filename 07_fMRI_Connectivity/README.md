@@ -8,4 +8,4 @@ Contains 4 Jupyter Notebooks for the 2 Cognestic Sessions on fMRI Connectivity
 
 07_04_network_analysis.ipynb - Graph-theoretic approaches to (any type of) connectome (network)
 
-There are also slides (PPT or PDF) for notebooks 07_02-03 (combined) and 07_04 (there are no slides for notebook 07_01)
+There are also PDFs of Slides for notebooks 07_02-03 (combined) and 07_04 (there are no slides for notebook 07_01)
